@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="BiWin&#39;s Blog">
+    <title>一、(Docker系列)初识Docker，搭建本地环境 - BiWin&#39;s Blog</title>
+    <meta name="author" content="Mr.WangLi">
+    
+        <meta name="keywords" content="Hexo,javascript,java,docker,kubernetes,jvm,mysql,nodejs,vue,mybatis,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"articleBody":"\n\n\n本地搭建Docker环境一、What is Docker\n官方网站\n1Modernize your applications, accelerate innovation Securely build, share and run modern applications anywhere\n\n使您的应用程序现代化，加速创新安全地在任何地方构建、共享和运行现代应用程序\n\n\nDocs\n1Docker is a platform for developers and sysadmins to develop, deploy, and run applications with containers. The use of Linux containers to deploy applications is called containerization. Containers are not new, but their use for easily deploying applications is.\n\nDocker是开发人员和系统管理员使用容器开发、部署和运行应用程序的平台。使用Linux容器部署应用程序称为容器化。容器不是新的，但它们用于轻松部署应用程序的用途。\n\n1. 如何理解容器化①远古时代\n问题：成本高、部署慢、浪费资源、硬件限制、不利于迁移扩展\n②虚拟化时代\n优点：相对利用好资源、相对容易扩展等。\n缺点：虚拟机太重了，一上来占用较多物理资源，移植性差，资源利用率低等。\n③容器时代\n2. Docker应用场景\nwww.docker.com —&gt;Solutions\n\n12345有助于Microservices的落地和部署充分利用物理机资源，同时能够整合服务器资源提高开发效率，测试效率，部署效率，有利于DevOps的落地，CICD云原生落地，应用更好的迁移...\n\n二、What is Image and Container?1. What is Image?\nA Docker container image is a lightweight, standalone, executable package of software that includes everything neededto run an application: code, runtime, system tools, system libraries and settings.\nDocker容器映像是一个轻量级的、独立的、可执行的软件包，包含运行应用程序所需的一切：代码、运行时、系统工具、系统库和设置。\n\n2. What is Container?\nA container is a standard unit of software that packages up code and all its dependencies so the application runsquickly and reliably from one computing environment to another.\n容器是一个标准的软件单元，它将代码及其所有依赖项打包，以便应用程序从一个计算环境快速可靠地运行到另一个计算环境。\n\n3. Relation between image and container\nContainer images become containers at runtime and in the case of Docker containers- images become containers when theyrun on Docker Engine.\n容器映像在运行时成为容器，在Docker容器的情况下，映像在Docker引擎上运行时成为容器。\n\n4. View from Docs\nA container is launched by running an image. An image is an executable package that includes everything needed to runan application–the code, a runtime, libraries, environment variables, and configuration files.\nA container is a runtime instance of an image–what the image becomes in memory when executed (that is, an image withstate, or a user process). You can see a list of your running containers with the command, docker ps, just as youwouldin Linux.\n通过运行图像启动容器映像是一个可执行包，包含运行应用程序所需的所有内容—代码、运行时、库、环境变量和配置文件。\n容器是映像的运行时实例——映像在执行时在内存中变成什么（即，具有状态的映像或用户进程）。您可以使用命令dockerps查看正在运行的容器的列表，就像在linux中一样。\n\n5. Container and virtual machines\nA container runs natively on Linux and shares the kernel of the host machine with other containers. It runs a discreteprocess, taking no more memory than any other executable, making it lightweight.\nBy contrast, a virtual machine (VM) runs a full-blown “guest” operating system with virtual access to host resourcesthrough a hypervisor. In general, VMs provide an environment with more resources than most applications need.\n容器在Linux上本机运行，并与其他容器共享主机的内核。它运行一个离散的进程，占用的内存不比任何其他可执行文件多，因此它很轻。\n相比之下，虚拟机（vm）运行一个完整的“来宾”操作系统，通过虚拟机监控程序对主机资源进行虚拟访问。一般来说，vm为环境提供的资源比大多数应用程序需要的资源多。\n\n\n三、 Docker Engine and Architecture1. Docker EngineDocker Engine is a client-server application with these major components:\n\nA server which is a type of long-running program called a daemon process (the dockerd command).（一种称为守护进程的长时间运行程序（dockerd命令）的服务器。）\nA REST API which specifies interfaces that programs can use to talk to the daemon and instruct it what to do.（一个restapi，它指定程序可以用来与守护进程对话并指示它做什么的接口。）\nA command line interface (CLI) client (the docker command).（命令行界面（cli）客户端（“docker”命令））\n\n\n2. Docker Architecture\nDocker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy liftingof building, running, and distributing your Docker containers. The Docker client and daemon can run on the samesystem,or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a RESTAPI,over UNIX sockets or a network interface.\n\nDocker使用客户机-服务器架构。Docker客户端与Docker守护进程通信，后者负责构建、运行和分发Docker容器。Docker客户端和守护进程可以在同一个系统上运行，也可以将Docker客户端连接到远程Docker守护进程。Docker客户端和守护进程使用一个restapi，通过unix套接字或网络接口进行通信。\n\n四、 Install and Experience\n1、 在Windows上准备centos7\n采用vagrant + virtual box的方式进行环境搭建。\n\n①、 下载安装vagrant12345访问 [Vagrant](https://www.vagrantup.com) 官网点击Download，分为Windows、MacOS、Linux等选择对应的版本傻瓜式安装命令行输入vagrant，测试是否安装成功\n\n\n②、 下载安装virtual box12345678访问 [VirtualBox](https://www.virtualbox.org/) 官网选择左侧的“Downloads”选择对应的操作系统版本傻瓜式安装[win10中若出现]安装virtualbox快完成时立即回滚，并提示安装出现严重错误\t（1）打开服务\t（2）找到Dvice Install Service 和Device Setup Manager,然后启动\t（3）再次尝试安装\n\n③、 安装centos7123456789101112131415161718192021222324在本地磁盘中创建frist-docker-centos7文件夹，并进入其中[目录路径不要有中文字符]在此目录下打开cmd，运行vagrant init centos/7，此时会在当前目录下生产Vagrantfile文件运行vagrant up[注意不要运行，默认拉取远端的centos7太慢]，此时会找centos7的镜像，本地有就用本地的，本地没有就会拉取远端的。准备centos7的box\t（1）选中命令行中提的链接，比如https://vagrantcloud.com/centos/boxes/7/versions/1905.1/providers/virtualbox.box\t（2）复制到迅雷中下载\t（3）vagrant box add centos/7 D:/first-docker-centos7/virtualbox.box\t（4）vagrant box list 查看本地的box[这时候可以看到centos/7]修改Vagrantfile\t（1）config.vm.box=“centos/7”\t（2）config.vm.network “public_network”\t（3）config.vm.provider &quot;virtualbox&quot; do | vb |\t\t\tvb.memory = &quot;3000&quot;\t\t\tvb.name= &quot;biwin2-centos7&quot; /* 名字可自定义 */\t\t\tvb.cpus= 2根据本地的centos7 box创建虚拟机\tvagrant up[打开virtual box，可以发现centos7创建成功]vagrant基本操作\t（1）vagrant ssh；进入刚才创建的centos7中\t（2）vagrant status；查看centos7的状态\t（3）vagrant halt；停止centos7\t（4）vagrant destroy；删除centos7\t（5）vagrant status；查看当前vagrant创建的虚拟机\t（6）Vagrantfile中可以写脚本命令，使得centos7更加丰富，但是要注意，修改了Vagrantfile，要想使正常运行的centos7生效，必须使用vagrant reload\n\n\n至此，使用vagrant+virtualbox搭建centos7完成，后面可以修改Vagrantfile对虚拟机进行相应的配置。\n\n④、 若想通过ssh客户端连接1234567891011121314151617查看centos7的相关信息\tvagrant ssh-config\t关注：Hostname Port IdentityFileMobaxterm连接（Xshell连接同理）\tIP: 127.0.0.1\tPORT: 2222\tUser: vagrant\tPassword: vagrant\t文件：Identifyfile指向的路径目前通过上方的链接信息实际上并不能远程连接，我们还需要以下步骤\t在cmd中进行远程连接：vagrant ssh\tsudo -i\tvi /etc/ssh/sshd_config\t修改PasswordAuthentication yes\tpasswd 修改密码(我本机密码都是vagrant)\tsystemctl restart sshd\troot vagrant 登录\n\n⑤、 box的打包分发1234567891011退出虚拟机\tvagrant halt打包\tvagrant package --output default-docker.box得到default-docker.box将default-docker.box添加到其他的vagrant环境中\tvagrant box add default-docker default-docker.box得到Vagrantfile\tvagrant init default-docker根据Vagrantfile启动虚拟机\tvagrant up[此时可以得到和之前一模一样的环境，但是网络要重新配置]\n\n2、 安装Docker\nhttps://docs.docker.com/install/linux/docker-ce/centos/\n\n123456789101112131415161718192021222324进入centos7\tvagrant ssh卸载之前的docker\tsudo yum remove docker \\\t\tdocker-client \\\t\tdocker-client-latest \\\t\tdocker-common \\\t\tdocker-latest \\\t\tdocker-latest-logrotate \\\t\tdocker-engine安装必要的依赖\tsudo yum install -y yum-utils \\\t\tdevice-mapper-persistent-data \\\t\tlvm2设置docker仓库 \tsudo yum-config-manager \\\t\t--add-repo \\\t\thttps://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo,设置阿里云镜像加速器安装docker\tsudo yum install -y docker-ce docker-ce-cli containerd.io启动docker\tsudo systemctl start docker &amp;&amp; sudo systemctl enable docker测试docker安装是否成功\tsudo docker run hello-world\n\n3、 Docker基本体验123456789创建tomcat容器\tdocker pull tomcat\tdocker run -d --name my-tomcat -p 9090:8080 tomcat\t创建mysql容器\tdocker run -d --name my-mysql -p 3301:3306 -e MYSQL_ROOT_PASSWORD=biwin --privileged mysql\t进入到容器里面\tdocker exec -it containerid /bin/bash\n\n4、 解疑（1）docker pull在哪里拉取的镜像？\n默认是在hub.docker.com\n（2）docker pull tomcat拉取的版本是？\n默认是最新的版本，可以在后面指定版本“：”\n（3）简单先说下命令\n\ndocker pull 拉取镜像到本地\ndocker run 根据某个镜像创建容器\n-d 让容器在后台运行，起始就是一个进程\n–name 给容器指定一个名字\n-p 将容器的端口映射到宿主机的端口\ndocker exec -it 进入到某个容器中并交互式运行\n\n参考：Docker基础(一)——环境搭建及常用命令 ","dateCreated":"2019-11-05T09:08:25+08:00","dateModified":"2024-09-01T21:22:35+08:00","datePublished":"2019-11-05T09:08:25+08:00","description":"学习搭建Docker环境，结合{ % post_link docker工具箱命令集-问题集锦 % }食用，效果佳","headline":"一、(Docker系列)初识Docker，搭建本地环境","image":["https://5b868fd.webp.li/docker-conver.png","http://pic.tsmp4.net/api/fengjing/img.php"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.biwin.eu.org/posts/f5f90d4.html"},"publisher":{"@type":"Organization","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg","logo":{"@type":"ImageObject","url":"https://img.biwin.eu.org/touxiang.jpeg"}},"url":"https://blog.biwin.eu.org/posts/f5f90d4.html","keywords":"docker","thumbnailUrl":"https://5b868fd.webp.li/docker-conver.png"}</script>
+    <meta name="description" content="初识Docker，搭建本地环境">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="一、(Docker系列)初识Docker，搭建本地环境">
+<meta property="og:url" content="https://blog.biwin.eu.org/posts/f5f90d4.html">
+<meta property="og:site_name" content="BiWin&#39;s Blog">
+<meta property="og:description" content="初识Docker，搭建本地环境">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-1.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-2.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-3.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-4.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-5.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-6.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-7.png">
+<meta property="og:image" content="https://5b868fd.webp.li/dockerSection1-8.png">
+<meta property="article:published_time" content="2019-11-05T01:08:25.000Z">
+<meta property="article:modified_time" content="2024-09-01T13:22:35.252Z">
+<meta property="article:author" content="Mr.WangLi">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://5b868fd.webp.li/dockerSection1-1.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg"/>
+    
+    
+        <meta property="og:image" content="https://5b868fd.webp.li/docker-conver.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://5b868fd.webp.li/docker-conver.png"/>
+    
+    
+        <meta property="og:image" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-4hml5cdywvohkobgphamhoy5wpbpmuojbmtb5e80b6r9kkwcikljrvgbmhfg.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            BiWin&#39;s Blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打开链接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Mr.WangLi</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>喜欢技术，喜欢一个人！</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/biwin-wangli"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="mailto:274027703@qq.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="邮箱"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=3132987672&auto=1&height=90"></iframe>
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--full"
+             style="background-image:url('http://pic.tsmp4.net/api/fengjing/img.php');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            一、(Docker系列)初识Docker，搭建本地环境
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-11-05T09:08:25+08:00">
+	
+		    2019 年 11 月 5 日
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/devOps/">devOps</a>
+
+
+    
+</div>
+
+        
+    
+    
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="post-meta">
+	        <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+	    </span>
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">再繁忙的学习，也需要静一会下来，放松自己，欣赏美丽的风景</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BADocker%E7%8E%AF%E5%A2%83"><span class="toc-text">本地搭建Docker环境</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81What-is-Docker"><span class="toc-text">一、What is Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E5%AE%B9%E5%99%A8%E5%8C%96"><span class="toc-text">1. 如何理解容器化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0%E8%BF%9C%E5%8F%A4%E6%97%B6%E4%BB%A3"><span class="toc-text">①远古时代</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E6%97%B6%E4%BB%A3"><span class="toc-text">②虚拟化时代</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A2%E5%AE%B9%E5%99%A8%E6%97%B6%E4%BB%A3"><span class="toc-text">③容器时代</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Docker%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2. Docker应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81What-is-Image-and-Container"><span class="toc-text">二、What is Image and Container?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-What-is-Image"><span class="toc-text">1. What is Image?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-What-is-Container"><span class="toc-text">2. What is Container?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Relation-between-image-and-container"><span class="toc-text">3. Relation between image and container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-View-from-Docs"><span class="toc-text">4. View from Docs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Container-and-virtual-machines"><span class="toc-text">5. Container and virtual machines</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81-Docker-Engine-and-Architecture"><span class="toc-text">三、 Docker Engine and Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Docker-Engine"><span class="toc-text">1. Docker Engine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Docker-Architecture"><span class="toc-text">2. Docker Architecture</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-Install-and-Experience"><span class="toc-text">四、 Install and Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81-%E5%9C%A8Windows%E4%B8%8A%E5%87%86%E5%A4%87centos7"><span class="toc-text">1、 在Windows上准备centos7</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0%E3%80%81-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85vagrant"><span class="toc-text">①、 下载安装vagrant</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1%E3%80%81-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85virtual-box"><span class="toc-text">②、 下载安装virtual box</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A2%E3%80%81-%E5%AE%89%E8%A3%85centos7"><span class="toc-text">③、 安装centos7</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A3%E3%80%81-%E8%8B%A5%E6%83%B3%E9%80%9A%E8%BF%87ssh%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="toc-text">④、 若想通过ssh客户端连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A4%E3%80%81-box%E7%9A%84%E6%89%93%E5%8C%85%E5%88%86%E5%8F%91"><span class="toc-text">⑤、 box的打包分发</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81-%E5%AE%89%E8%A3%85Docker"><span class="toc-text">2、 安装Docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81-Docker%E5%9F%BA%E6%9C%AC%E4%BD%93%E9%AA%8C"><span class="toc-text">3、 Docker基本体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81-%E8%A7%A3%E7%96%91"><span class="toc-text">4、 解疑</span></a></li></ol></li></ol></li></ol>
+
+<h1 id="本地搭建Docker环境"><a href="#本地搭建Docker环境" class="headerlink" title="本地搭建Docker环境"></a>本地搭建Docker环境</h1><h2 id="一、What-is-Docker"><a href="#一、What-is-Docker" class="headerlink" title="一、What is Docker"></a>一、What is Docker</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://wwww.docker.com/">官方网站</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Modernize your applications, accelerate innovation Securely build, share and run modern applications anywhere</span><br></pre></td></tr></table></figure>
+
+<p>使您的应用程序现代化，加速创新安全地在任何地方构建、共享和运行现代应用程序</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">Docs</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Docker is a platform for developers and sysadmins to develop, deploy, and run applications with containers. The use of Linux containers to deploy applications is called containerization. Containers are not new, but their use for easily deploying applications is.</span><br></pre></td></tr></table></figure>
+
+<p>Docker是开发人员和系统管理员使用容器开发、部署和运行应用程序的平台。使用Linux容器部署应用程序称为容器化。容器不是新的，但它们用于轻松部署应用程序的用途。</p>
+</blockquote>
+<h3 id="1-如何理解容器化"><a href="#1-如何理解容器化" class="headerlink" title="1. 如何理解容器化"></a>1. 如何理解容器化</h3><h4 id="①远古时代"><a href="#①远古时代" class="headerlink" title="①远古时代"></a>①远古时代</h4><p><img src="https://5b868fd.webp.li/dockerSection1-1.png" alt="image-20191103143223919"></p>
+<p><code>问题</code>：成本高、部署慢、浪费资源、硬件限制、不利于迁移扩展</p>
+<h4 id="②虚拟化时代"><a href="#②虚拟化时代" class="headerlink" title="②虚拟化时代"></a>②虚拟化时代</h4><p><img src="https://5b868fd.webp.li/dockerSection1-2.png" alt="image-20191103143336773"></p>
+<p><code>优点</code>：相对利用好资源、相对容易扩展等。</p>
+<p><code>缺点</code>：虚拟机太重了，一上来占用较多物理资源，移植性差，资源利用率低等。</p>
+<h4 id="③容器时代"><a href="#③容器时代" class="headerlink" title="③容器时代"></a>③容器时代</h4><p><img src="https://5b868fd.webp.li/dockerSection1-3.png" alt="image-20191103143456254"></p>
+<h3 id="2-Docker应用场景"><a href="#2-Docker应用场景" class="headerlink" title="2. Docker应用场景"></a>2. Docker应用场景</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.docker.com/">www.docker.com</a> —&gt;Solutions</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">有助于Microservices的落地和部署</span><br><span class="line">充分利用物理机资源，同时能够整合服务器资源</span><br><span class="line">提高开发效率，测试效率，部署效率，有利于DevOps的落地，CICD</span><br><span class="line">云原生落地，应用更好的迁移</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、What-is-Image-and-Container"><a href="#二、What-is-Image-and-Container" class="headerlink" title="二、What is Image and Container?"></a>二、What is Image and Container?</h2><h3 id="1-What-is-Image"><a href="#1-What-is-Image" class="headerlink" title="1. What is Image?"></a>1. What is Image?</h3><blockquote>
+<p>A Docker container image is a lightweight, standalone, executable package of software that includes everything needed<br>to run an application: code, runtime, system tools, system libraries and settings.</p>
+<p>Docker容器映像是一个轻量级的、独立的、可执行的软件包，包含运行应用程序所需的一切：代码、运行时、系统工具、系统库和设置。</p>
+</blockquote>
+<h3 id="2-What-is-Container"><a href="#2-What-is-Container" class="headerlink" title="2. What is Container?"></a>2. What is Container?</h3><blockquote>
+<p>A container is a standard unit of software that packages up code and all its dependencies so the application runs<br>quickly and reliably from one computing environment to another.</p>
+<p>容器是一个标准的软件单元，它将代码及其所有依赖项打包，以便应用程序从一个计算环境快速可靠地运行到另一个计算环境。</p>
+</blockquote>
+<h3 id="3-Relation-between-image-and-container"><a href="#3-Relation-between-image-and-container" class="headerlink" title="3. Relation between image and container"></a>3. Relation between image and container</h3><blockquote>
+<p>Container images become containers at runtime and in the case of Docker containers- images become containers when they<br>run on Docker Engine.</p>
+<p>容器映像在运行时成为容器，在Docker容器的情况下，映像在Docker引擎上运行时成为容器。</p>
+</blockquote>
+<h3 id="4-View-from-Docs"><a href="#4-View-from-Docs" class="headerlink" title="4. View from Docs"></a>4. View from Docs</h3><blockquote>
+<p>A container is launched by running an image. An image is an executable package that includes everything needed to run<br>an application–the code, a runtime, libraries, environment variables, and configuration files.</p>
+<p>A container is a runtime instance of an image–what the image becomes in memory when executed (that is, an image with<br>state, or a user process). You can see a list of your running containers with the command, docker ps, just as you<br>would<br>in Linux.</p>
+<p>通过运行图像启动容器映像是一个可执行包，包含运行应用程序所需的所有内容—代码、运行时、库、环境变量和配置文件。</p>
+<p>容器是映像的运行时实例——映像在执行时在内存中变成什么（即，具有状态的映像或用户进程）。您可以使用命令docker<br>ps查看正在运行的容器的列表，就像在linux中一样。</p>
+</blockquote>
+<h3 id="5-Container-and-virtual-machines"><a href="#5-Container-and-virtual-machines" class="headerlink" title="5. Container and virtual machines"></a>5. Container and virtual machines</h3><blockquote>
+<p>A container runs natively on Linux and shares the kernel of the host machine with other containers. It runs a discrete<br>process, taking no more memory than any other executable, making it lightweight.</p>
+<p>By contrast, a virtual machine (VM) runs a full-blown “guest” operating system with virtual access to host resources<br>through a hypervisor. In general, VMs provide an environment with more resources than most applications need.</p>
+<p>容器在Linux上本机运行，并与其他容器共享主机的内核。它运行一个离散的进程，占用的内存不比任何其他可执行文件多，因此它很轻。</p>
+<p>相比之下，虚拟机（vm）运行一个完整的“来宾”操作系统，通过虚拟机监控程序对主机资源进行虚拟访问。一般来说，vm为环境提供的资源比大多数应用程序需要的资源多。</p>
+</blockquote>
+<p><img src="https://5b868fd.webp.li/dockerSection1-4.png" alt="image-20191103145008913"></p>
+<h2 id="三、-Docker-Engine-and-Architecture"><a href="#三、-Docker-Engine-and-Architecture" class="headerlink" title="三、 Docker Engine and Architecture"></a>三、 Docker Engine and Architecture</h2><h3 id="1-Docker-Engine"><a href="#1-Docker-Engine" class="headerlink" title="1. Docker Engine"></a>1. Docker Engine</h3><p><em>Docker Engine</em> is a client-server application with these major components:</p>
+<ul>
+<li>A server which is a type of long-running program called a daemon process (the <code>dockerd</code> command)<br>.（一种称为守护进程的长时间运行程序（dockerd命令）的服务器。）</li>
+<li>A REST API which specifies interfaces that programs can use to talk to the daemon and instruct it what to do.（一个rest<br>api，它指定程序可以用来与守护进程对话并指示它做什么的接口。）</li>
+<li>A command line interface (CLI) client (the <code>docker</code> command).（命令行界面（cli）客户端（“docker”命令））</li>
+</ul>
+<p><img src="https://5b868fd.webp.li/dockerSection1-5.png" alt="image-20191103145245344"></p>
+<h3 id="2-Docker-Architecture"><a href="#2-Docker-Architecture" class="headerlink" title="2. Docker Architecture"></a>2. Docker Architecture</h3><blockquote>
+<p>Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting<br>of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same<br>system,<br>or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST<br>API,<br>over UNIX sockets or a network interface.</p>
+</blockquote>
+<p>Docker使用客户机-服务器架构。Docker客户端与Docker守护进程通信，后者负责构建、运行和分发Docker容器。Docker客户端和守护进程可以在同一个系统上运行，也可以将Docker客户端连接到远程Docker守护进程。Docker客户端和守护进程使用一个rest<br>api，通过unix套接字或网络接口进行通信。</p>
+<p><img src="https://5b868fd.webp.li/dockerSection1-6.png" alt="image-20191103145535203"></p>
+<h2 id="四、-Install-and-Experience"><a href="#四、-Install-and-Experience" class="headerlink" title="四、 Install and Experience"></a>四、 Install and Experience</h2><p><img src="https://5b868fd.webp.li/dockerSection1-7.png" alt="image-20191103145848986"></p>
+<h3 id="1、-在Windows上准备centos7"><a href="#1、-在Windows上准备centos7" class="headerlink" title="1、 在Windows上准备centos7"></a>1、 在Windows上准备centos7</h3><blockquote>
+<p>采用vagrant + virtual box的方式进行环境搭建。</p>
+</blockquote>
+<h4 id="①、-下载安装vagrant"><a href="#①、-下载安装vagrant" class="headerlink" title="①、 下载安装vagrant"></a>①、 下载安装vagrant</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">访问 [Vagrant](https://www.vagrantup.com) 官网</span><br><span class="line">点击Download，分为Windows、MacOS、Linux等</span><br><span class="line">选择对应的版本</span><br><span class="line">傻瓜式安装</span><br><span class="line">命令行输入vagrant，测试是否安装成功</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://5b868fd.webp.li/dockerSection1-8.png" alt="image-20191103150515810"></p>
+<h4 id="②、-下载安装virtual-box"><a href="#②、-下载安装virtual-box" class="headerlink" title="②、 下载安装virtual box"></a>②、 下载安装virtual box</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">访问 [VirtualBox](https://www.virtualbox.org/) 官网</span><br><span class="line">选择左侧的“Downloads”</span><br><span class="line">选择对应的操作系统版本</span><br><span class="line">傻瓜式安装</span><br><span class="line">[win10中若出现]安装virtualbox快完成时立即回滚，并提示安装出现严重错误</span><br><span class="line">	（1）打开服务</span><br><span class="line">	（2）找到Dvice Install Service 和Device Setup Manager,然后启动</span><br><span class="line">	（3）再次尝试安装</span><br></pre></td></tr></table></figure>
+
+<h4 id="③、-安装centos7"><a href="#③、-安装centos7" class="headerlink" title="③、 安装centos7"></a>③、 安装centos7</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">在本地磁盘中创建frist-docker-centos7文件夹，并进入其中[目录路径不要有中文字符]</span><br><span class="line">在此目录下打开cmd，运行vagrant init centos/7，此时会在当前目录下生产Vagrantfile文件</span><br><span class="line">运行vagrant up[注意不要运行，默认拉取远端的centos7太慢]，此时会找centos7的镜像，本地有就用本地的，本地没有就会拉取远端的。</span><br><span class="line">准备centos7的box</span><br><span class="line">	（1）选中命令行中提的链接，比如https://vagrantcloud.com/centos/boxes/7/versions/1905.1/providers/virtualbox.box</span><br><span class="line">	（2）复制到迅雷中下载</span><br><span class="line">	（3）vagrant box add centos/7 D:/first-docker-centos7/virtualbox.box</span><br><span class="line">	（4）vagrant box list 查看本地的box[这时候可以看到centos/7]</span><br><span class="line">修改Vagrantfile</span><br><span class="line">	（1）config.vm.box=“centos/7”</span><br><span class="line">	（2）config.vm.network “public_network”</span><br><span class="line">	（3）config.vm.provider &quot;virtualbox&quot; do | vb |</span><br><span class="line">			vb.memory = &quot;3000&quot;</span><br><span class="line">			vb.name= &quot;biwin2-centos7&quot; /* 名字可自定义 */</span><br><span class="line">			vb.cpus= 2</span><br><span class="line">根据本地的centos7 box创建虚拟机</span><br><span class="line">	vagrant up[打开virtual box，可以发现centos7创建成功]</span><br><span class="line">vagrant基本操作</span><br><span class="line">	（1）vagrant ssh；进入刚才创建的centos7中</span><br><span class="line">	（2）vagrant status；查看centos7的状态</span><br><span class="line">	（3）vagrant halt；停止centos7</span><br><span class="line">	（4）vagrant destroy；删除centos7</span><br><span class="line">	（5）vagrant status；查看当前vagrant创建的虚拟机</span><br><span class="line">	（6）Vagrantfile中可以写脚本命令，使得centos7更加丰富，但是要注意，修改了Vagrantfile，要想使正常运行的centos7生效，必须使用vagrant reload</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>至此，使用vagrant+virtualbox搭建centos7完成，后面可以修改Vagrantfile对虚拟机进行相应的配置。</p>
+</blockquote>
+<h4 id="④、-若想通过ssh客户端连接"><a href="#④、-若想通过ssh客户端连接" class="headerlink" title="④、 若想通过ssh客户端连接"></a>④、 若想通过ssh客户端连接</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">查看centos7的相关信息</span><br><span class="line">	vagrant ssh-config</span><br><span class="line">	关注：Hostname Port IdentityFile</span><br><span class="line">Mobaxterm连接（Xshell连接同理）</span><br><span class="line">	IP: 127.0.0.1</span><br><span class="line">	PORT: 2222</span><br><span class="line">	User: vagrant</span><br><span class="line">	Password: vagrant</span><br><span class="line">	文件：Identifyfile指向的路径</span><br><span class="line">目前通过上方的链接信息实际上并不能远程连接，我们还需要以下步骤</span><br><span class="line">	在cmd中进行远程连接：vagrant ssh</span><br><span class="line">	sudo -i</span><br><span class="line">	vi /etc/ssh/sshd_config</span><br><span class="line">	修改PasswordAuthentication yes</span><br><span class="line">	passwd 修改密码(我本机密码都是vagrant)</span><br><span class="line">	systemctl restart sshd</span><br><span class="line">	root vagrant 登录</span><br></pre></td></tr></table></figure>
+
+<h4 id="⑤、-box的打包分发"><a href="#⑤、-box的打包分发" class="headerlink" title="⑤、 box的打包分发"></a>⑤、 box的打包分发</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">退出虚拟机</span><br><span class="line">	vagrant halt</span><br><span class="line">打包</span><br><span class="line">	vagrant package --output default-docker.box</span><br><span class="line">得到default-docker.box</span><br><span class="line">将default-docker.box添加到其他的vagrant环境中</span><br><span class="line">	vagrant box add default-docker default-docker.box</span><br><span class="line">得到Vagrantfile</span><br><span class="line">	vagrant init default-docker</span><br><span class="line">根据Vagrantfile启动虚拟机</span><br><span class="line">	vagrant up[此时可以得到和之前一模一样的环境，但是网络要重新配置]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、-安装Docker"><a href="#2、-安装Docker" class="headerlink" title="2、 安装Docker"></a>2、 安装Docker</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/install/linux/docker-ce/centos/">https://docs.docker.com/install/linux/docker-ce/centos/</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">进入centos7</span><br><span class="line">	vagrant ssh</span><br><span class="line">卸载之前的docker</span><br><span class="line">	sudo yum remove docker \</span><br><span class="line">		docker-client \</span><br><span class="line">		docker-client-latest \</span><br><span class="line">		docker-common \</span><br><span class="line">		docker-latest \</span><br><span class="line">		docker-latest-logrotate \</span><br><span class="line">		docker-engine</span><br><span class="line">安装必要的依赖</span><br><span class="line">	sudo yum install -y yum-utils \</span><br><span class="line">		device-mapper-persistent-data \</span><br><span class="line">		lvm2</span><br><span class="line">设置docker仓库 </span><br><span class="line">	sudo yum-config-manager \</span><br><span class="line">		--add-repo \</span><br><span class="line">		https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo,设置阿里云镜像加速器</span><br><span class="line">安装docker</span><br><span class="line">	sudo yum install -y docker-ce docker-ce-cli containerd.io</span><br><span class="line">启动docker</span><br><span class="line">	sudo systemctl start docker &amp;&amp; sudo systemctl enable docker</span><br><span class="line">测试docker安装是否成功</span><br><span class="line">	sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、-Docker基本体验"><a href="#3、-Docker基本体验" class="headerlink" title="3、 Docker基本体验"></a>3、 Docker基本体验</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">创建tomcat容器</span><br><span class="line">	docker pull tomcat</span><br><span class="line">	docker run -d --name my-tomcat -p 9090:8080 tomcat</span><br><span class="line">	</span><br><span class="line">创建mysql容器</span><br><span class="line">	docker run -d --name my-mysql -p 3301:3306 -e MYSQL_ROOT_PASSWORD=biwin --privileged mysql</span><br><span class="line">	</span><br><span class="line">进入到容器里面</span><br><span class="line">	docker exec -it containerid /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、-解疑"><a href="#4、-解疑" class="headerlink" title="4、 解疑"></a>4、 解疑</h3><p>（1）docker pull在哪里拉取的镜像？</p>
+<p>默认是在hub.docker.com</p>
+<p>（2）docker pull tomcat拉取的版本是？</p>
+<p>默认是最新的版本，可以在后面指定版本“：”</p>
+<p>（3）简单先说下命令</p>
+<blockquote>
+<p>docker pull 拉取镜像到本地</p>
+<p>docker run 根据某个镜像创建容器</p>
+<p>-d 让容器在后台运行，起始就是一个进程</p>
+<p>–name 给容器指定一个名字</p>
+<p>-p 将容器的端口映射到宿主机的端口</p>
+<p>docker exec -it 进入到某个容器中并交互式运行</p>
+</blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://moshi.site/2019/11/01/Docker%E5%9F%BA%E7%A1%80(%E4%B8%80)%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Docker基础(一)——环境搭建及常用命令</a> </p>
+            
+
+
+        </div>
+    </div>
+    <br/>
+    <!-- 添加的部分 -->
+    <!-- copyright -->
+    
+        <style>
+.article-footer-copyright {
+	border-left-color: #f66;
+	padding: 12px 24px 12px 30px;
+    margin: 2em 0;
+    border-left-width: 4px;
+    border-left-style: solid;
+    background-color: #f8f8f8;
+    position: relative;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+	margin:0 auto;
+	max-width: 850px;}
+</style>
+<div class="article-footer-copyright">
+    <!-- <span>本文标题:</span><href="/%20"> 一、(Docker系列)初识Docker，搭建本地环境</a><br/> -->
+    <!-- <span>文章作者:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/> -->
+	<span>版权归属:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/>
+    <span>发布时间:</span>2019年11月05日 - 09:08 | 
+    <span>最后更新:</span>2024年09月01日 - 21:22<br/>
+    <span>原始链接:</span><a href="/posts/f5f90d4.html" title="一、(Docker系列)初识Docker，搭建本地环境">https://blog.biwin.eu.org/posts/f5f90d4.html</a><br/>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.biwin.eu.org/posts/f5f90d4.html"  aria-label="复制成功！"></i></span><br/>
+    <span>许可协议:</span><i class="fab fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">知识共享署名4.0 国际许可协议</a> 转载请保留原文链接及作者。
+</div>
+
+    
+    <!-- copyright -->
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/docker/" rel="tag">docker</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/1d2e50aa.html"
+                    data-tooltip="二、(Docker系列)Docker灵魂探讨"
+                    aria-label="上一篇: 二、(Docker系列)Docker灵魂探讨"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/4e2dcaec.html"
+                    data-tooltip="Java8新特性之默认接口方法"
+                    aria-label="下一篇: Java8新特性之默认接口方法"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                    title="分享到 Weibo"
+                    aria-label="分享到 Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/f5f90d4.html&amp;title=一、(Docker系列)初识Docker，搭建本地环境"
+                    title="分享到 QQ"
+                    aria-label="分享到 QQ"
+                >
+                    <i class="fab fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                    title="分享到 Qzone"
+                    aria-label="分享到 Qzone"
+                >
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <br/>
+<div class="vcomment"></div>
+            
+        
+    </div>
+</article>
+
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2024 Mr.WangLi. All Rights Reserved.
+    </span>
+    <br/>
+    
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+	                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+	                本站访客数<span id="busuanzi_value_site_uv"></span>人
+	        </span>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/1d2e50aa.html"
+                    data-tooltip="二、(Docker系列)Docker灵魂探讨"
+                    aria-label="上一篇: 二、(Docker系列)Docker灵魂探讨"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/4e2dcaec.html"
+                    data-tooltip="Java8新特性之默认接口方法"
+                    aria-label="下一篇: Java8新特性之默认接口方法"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                    title="分享到 Weibo"
+                    aria-label="分享到 Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/f5f90d4.html&amp;title=一、(Docker系列)初识Docker，搭建本地环境"
+                    title="分享到 QQ"
+                    aria-label="分享到 QQ"
+                >
+                    <i class="fab fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                    title="分享到 Qzone"
+                    aria-label="分享到 Qzone"
+                >
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                        aria-label="分享到 Weibo"
+                    >
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到 Weibo</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/f5f90d4.html&amp;title=一、(Docker系列)初识Docker，搭建本地环境"
+                        aria-label="分享到 QQ"
+                    >
+                        <i class="fab fa-qq" aria-hidden="true"></i><span>分享到 QQ</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/f5f90d4.html"
+                        aria-label="分享到 Qzone"
+                    >
+                        <i class="fa fa-star" aria-hidden="true"></i><span>分享到 Qzone</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">Mr.WangLi</h4>
+        
+            <div id="about-card-bio"><p>喜欢技术，喜欢一个人！</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>一个有脾气的 Javaer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                中国·四川·成都
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/e800f027.html"
+                            aria-label=": Java8新特性之Lambda表达式"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/e800f027.html"
+                            aria-label=": Java8新特性之Lambda表达式"
+                        >
+                            <h3 class="media-heading">Java8新特性之Lambda表达式</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年6月19日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>lambda表达式是java8给我们带来的几个重量级新特性之一，借用lambda表达式，可以让我们的java程序设计更加简洁。最近新的项目摒弃了1.6的版本，全面基于java8进行开发，本篇文章是java8新特性的第一篇，将探讨行为参数化、lambda表达式，以及方法引用。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/e19f5dc7.html"
+                            aria-label=": Java8新特性之Optional类"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/e19f5dc7.html"
+                            aria-label=": Java8新特性之Optional类"
+                        >
+                            <h3 class="media-heading">Java8新特性之Optional类</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年6月19日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Optional不是对null关键字的一种替代，而是对于null判定提供了一种更加优雅的实现</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/df816e2e.html"
+                            aria-label=": Java8新特性之流式数据处理"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/df816e2e.html"
+                            aria-label=": Java8新特性之流式数据处理"
+                        >
+                            <h3 class="media-heading">Java8新特性之流式数据处理</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年6月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>java8的流式处理极大了简化我们对于集合、数组等结构的操作，让我们可以以函数式的思想去操作，本篇文章将探讨java8的流式数据处理的基本使用。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/4e2dcaec.html"
+                            aria-label=": Java8新特性之默认接口方法"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/4e2dcaec.html"
+                            aria-label=": Java8新特性之默认接口方法"
+                        >
+                            <h3 class="media-heading">Java8新特性之默认接口方法</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年6月21日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>从java8开始，接口不只是一个只能声明方法的地方，我们还可以在声明方法时，给方法一个默认的实现，我们称之为默认接口方法，这样所有实现该接口的子类都可以持有该方法的默认实现。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/f5f90d4.html"
+                            aria-label=": 一、(Docker系列)初识Docker，搭建本地环境"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/f5f90d4.html"
+                            aria-label=": 一、(Docker系列)初识Docker，搭建本地环境"
+                        >
+                            <h3 class="media-heading">一、(Docker系列)初识Docker，搭建本地环境</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年11月5日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>学习搭建Docker环境，结合{ % post_link docker工具箱命令集-问题集锦 % }食用，效果佳</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/1d2e50aa.html"
+                            aria-label=": 二、(Docker系列)Docker灵魂探讨"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/1d2e50aa.html"
+                            aria-label=": 二、(Docker系列)Docker灵魂探讨"
+                        >
+                            <h3 class="media-heading">二、(Docker系列)Docker灵魂探讨</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>深入学习Image和Container</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/a2fc68e9.html"
+                            aria-label=": 三、(Docker系列)Docker精髓剖析-网络"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/a2fc68e9.html"
+                            aria-label=": 三、(Docker系列)Docker精髓剖析-网络"
+                        >
+                            <h3 class="media-heading">三、(Docker系列)Docker精髓剖析-网络</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年11月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Docker和Linux中的网络深入</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/525c4592.html"
+                            aria-label=": 五、(Docker系列)Docker深度提升篇笔记"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/525c4592.html"
+                            aria-label=": 五、(Docker系列)Docker深度提升篇笔记"
+                        >
+                            <h3 class="media-heading">五、(Docker系列)Docker深度提升篇笔记</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年11月23日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Docker Compose与Docker Swarm</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/a95bfc2e.html"
+                            aria-label=": docker工具箱命令集-问题集锦"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/a95bfc2e.html"
+                            aria-label=": docker工具箱命令集-问题集锦"
+                        >
+                            <h3 class="media-heading">docker工具箱命令集-问题集锦</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年11月23日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Vagrant Docker 命令集解释备忘</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/8d02a8ee.html"
+                            aria-label=": 四、(Docker系列)Docker项目实战"
+                        >
+                            <img class="media-image" src="https://5b868fd.webp.li/docker-conver.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/8d02a8ee.html"
+                            aria-label=": 四、(Docker系列)Docker项目实战"
+                        >
+                            <h3 class="media-heading">四、(Docker系列)Docker项目实战</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年12月13日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Docker中的Volume</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 16 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-li5b6imv8fegs28wardyqn5gr1i2sduip5nb4gllysga29bigm4tto2irf0u.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '.vcomment',
+                notify: false,
+                verify: false,
+                appId: "6Im09hBEDOiBEU45f3fOc9Hm-gzGzoHsz",
+                appKey: "Tc4aa3tRDVWw4GJEcBNfaAuB",
+                placeholder: "发现问题，讨论问题，反馈问题，欢迎您的留言和评论！",
+                pageSize:'10',
+                avatar:'monsterid',
+                meta: ['nick', 'mail'],
+                lang:''
+            })
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+        var algoliaClient = algoliasearch('I16OUI732Q', 'e1b3e94dd16c5fd972a4f855178f99f8');
+        var algoliaIndex = algoliaClient.initIndex('blog');
+    </script>
+
+
+    </body>
+</html>

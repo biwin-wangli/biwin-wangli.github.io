@@ -6,23 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="BiWin&#39;s Blog">
-    <title> - BiWin&#39;s Blog</title>
+    <title>Zookeeper - BiWin&#39;s Blog</title>
     <meta name="author" content="Mr.WangLi">
     
         <meta name="keywords" content="Hexo,javascript,java,docker,kubernetes,jvm,mysql,nodejs,vue,mybatis,">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"https://blog.biwin.eu.org","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"name":"BiWin's Blog","description":"一个有脾气的 Javaer","url":"https://blog.biwin.eu.org","keywords":"Hexo, javascript, java, docker, kubernetes, jvm, mysql, nodejs, vue, mybatis"}</script>
-    <meta name="description" content="title: Page not foundmeta: falseactions: falsecomments: false">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"articleBody":"\n\n\n基本数据模型\n是一个树形结构，类似前端开发中的tree.js组件，zk的数据模型也可以理解为linux的文件目录：&#x2F;usr&#x2F;local&#x2F;…\n每一个节点都称之为znode，它可以有子节点，也可以有数据\n每个节点分为临时节点和永久节点，临时节点在客户端断开后消失\n每个zk节点都有各自的版本号，可以通过命令行来显示节点信息\n每当节点数据发生变化，那么该节点的版本号会累加（乐观锁）\n删除、修改过时节点，版本号不匹配则会报错\n每个zk节点存储的数据不宜过大，几K即可\n节点可以设置权限acl，可以通过权限来限制用户的访问\n\n数据模型的基本操作客户端连接123./zkServer.sh start./zkCli.sh#通过help查看命令\n\n查看znode结构12ls# 返回 /zookeeper\n\n关闭客户端连接关闭客户端一般直接Ctrl+C即可。\nzk的作用体用\nmaster节点选举，主节点挂了以后，从节点就会接受工作，并且保证这个节点是唯一的，这也是所谓首脑模式，从而保证我们的集群是高可用的。\n统一配置文件管理，即只需要部署一台服务器，则可以把相同的配置文件同步更新到其他所有服务器，此操作在云计算中用的特别多。\n发布与订阅，类似消息队列MQ(amq,rmq…),dubbo发布者把数据存在znode上，订阅者会读取这个数据。\n提供分布式锁，分布式环境中不同进程之间争夺资源，类似于多线程中的锁。\n集群管理，集群中保证数据的强一致性。\n\nzk常用命令行操作\n通过./zkCli.sh打开zk的客户端进行命令行后台。\nls与ls2：ls是查看节点的信息，而ls2则是ls+stat命令的整合命令。\nget与stat：get是获取节点的数据，并且会打印出节点的信息，stat则是直接打印节点信息，我们来看下节点信息中包含了什么\n\n1234567891011cZxid    # 节点创建后，zk为这个节点分配的idctime    # 创建时间mZxid    # 节点修改后的id，前缀的m代表modifymtime    # 节点修改时间pZxid    # 子节点idcversion # 子节点的versiondataVersion # 数据版本号，数据修改后，版本号会加1aclVersion  # 权限版本号ephemeralOwner # 显示当前节点是临时节点还是永久节点，0x0是永久节点，0x1...是临时节点dataLength  # 数据长度numChildren # 子节点的数量\n\n\ncreate：语法create [-s] [-e] path data acl;-e为临时节点，-s为顺序节点\nset：语法set path data [version];version主要用于乐观锁\ndelete：语法delete path [version];version语义与set一致\n\nzk特性Session的基本原理\n客户端与服务端之间的连接存在会话\n每个会话都可以设置一个超时时间\n心跳结束，session则过期\nSession过期，则临时节点znode会被抛弃\n心跳机制：客户端向服务端的ping包请求\n\nWatcher机制\n针对每个节点的操作，都会有一个监督者-&gt;wather\n当监控的某个对象（znode）发生了变化，则出发watcher事件\nzk中的watcher是一次性的，触发后立即销毁\n父节点，子节点增删改都能够触发其watcher\n针对不同类型的操作，触发的watcher事件也不同：\n\n\n（子）节点创建事件\n（子）节点删除事件\n（子）节点数据变化事件\n\nWatcher命令行学习\n通过get path [watch]设置watcher\n父节点增删改操作都可以触发watcher\n子节点增删改操作也都可以触发watcher\n\nwatcher事件类型父节点\n\n创建父节点触发：NodeCreated，可以通过stat path [watch]来给指定path绑定事件，path不存在也可以提前创建事件。\n修改父节点数据触发：NodeDataChanged，也可以利用get path [watch]来绑定事件。\n删除父节点触发：NodeDeleted。\nls为父节点设置watcher，创建子节点触发：NodeChildrenChanged\nls为父节点设置watcher，删除子节点触发：NodeChildrenChanged\nls为父节点设置watcher，修改子节点不触发事件，需要把子节点当成父节点来进行事件绑定\n\nwatcher使用场景\n统一资源配置\n\nACL（ACCESS CONTROL LISTS）权限控制\n针对节点可以设置相关读写等权限，目的为了保障数据安全性\n权限permissions可以指定不同的权限范围以及角色\n\nACL命令行\ngetAcl：获取某个节点的acl权限信息，语法 getAcl path\nsetAcl：设置某个节点的acl权限信息，语法 setAcl path acl\naddauth：输入认证授权信息，注册时输入明文密码（登录），但是在zk的系统里，密码是以加密的形式存在的。语法：addauth scheme auth\n\nACL的构成\nzk的acl通过[scheme:ip:permissions]来构成权限列表\n\n\nscheme：代表采用的某种权限机制\nip：代表允许访问的用户ip\npermissions：权限组合字符\n\nScheme\nworld：world下只有一个id，即只要一个用户，也就是anyone，那么组合的写法就是world:anayone:[permissions]\nauth：代表认证登录，需要注册用户有权限就可以，形式为auth:user:password:[permissions]\ndigest：需要对密码加密才能访问，组合形式为：digest:username:BASE64(SHA1(password)):[permissions]\n\n\n简而言之，auth与digest的区别就是，前者明文，后者密文setAcl &#x2F;path auth:lee:lee:cdrwa与setAcl &#x2F;path digest:lee:BASE64(SHA1(password))cdrwa是等价的，在通过addauth digest lee:lee后都能操作指定节点的权限\n\n\nip：当设置为ip指定的ip地址，此时限制ip进行访问，比如ip：192.168.1.1:[permissions]\nsuper：代表超级管理员，拥有所有的权限\n\n\n使用super是要进行两步1.修改zkServer.sh增加super管理员，在文件中搜索nohup，增加如下代码-Dzookeeper.DigestAuthenticationProvider.superDigest=username:password2.重启zkServer.sh\n\nPermissions\n权限字符串缩写：crdwa\n\n\ncreate：创建子节点\nread：获取节点、子节点\nwrite：设置节点数据\ndelete：删除子节点\nadmin：设置权限\n\nALC的常用使用场景\n开发&#x2F;测试环境分离，开发者无权限操作测试库的节点，只能看\n生产环境上控制指定ip的服务可以访问相关节点，防止混乱\n\nzk四字命令Four Letter Words\nzk可以通过它自身提供的简写命令来和服务器进行交互\n需要使用到nc命令，安装：yum install nc\necho [command] | nc [ip] [port]\n\n参考官网链接\n四字命令简介\nstat 查看zk的状态信息，以及是否standalone mode\nruok 查看当前zkserver是否启动，返回imok。\ndump 列出未经处理的会话和临时节点\nconf 查看服务器配置\ncons 展示连接到服务器的客户端信息\nenvi 环境变量\nmntr 监控zk健康信息\nwchs 展示watch的信息\nwchc与wchp： session与watch及path与watch信息，注意3.4.10版本以上默认是不开启这两个命令，需要从zoo.conf文件中添加4lw.commands.whitelist\n\nzk集群搭建\nzk集群，主从节点，心跳机制（选举模式）\n","dateCreated":"2019-12-30T21:30:21+08:00","dateModified":"2024-09-01T21:04:07+08:00","datePublished":"2019-12-30T21:30:21+08:00","description":"待完善","headline":"Zookeeper","image":["https://api.dujin.org/bing/1366.php","http://pic.tsmp4.net/api/fengjing/img.php"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.biwin.eu.org/posts/b829b66a.html"},"publisher":{"@type":"Organization","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg","logo":{"@type":"ImageObject","url":"https://img.biwin.eu.org/touxiang.jpeg"}},"url":"https://blog.biwin.eu.org/posts/b829b66a.html","thumbnailUrl":"https://api.dujin.org/bing/1366.php"}</script>
+    <meta name="description" content="Zookeeper">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="BiWin&#39;s Blog">
-<meta property="og:url" content="https://blog.biwin.eu.org/404.html">
+<meta property="og:title" content="Zookeeper">
+<meta property="og:url" content="https://blog.biwin.eu.org/posts/b829b66a.html">
 <meta property="og:site_name" content="BiWin&#39;s Blog">
-<meta property="og:description" content="title: Page not foundmeta: falseactions: falsecomments: false">
+<meta property="og:description" content="Zookeeper">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-01T03:34:06.399Z">
-<meta property="article:modified_time" content="2024-09-01T03:34:06.399Z">
+<meta property="article:published_time" content="2019-12-30T13:30:21.000Z">
+<meta property="article:modified_time" content="2024-09-01T13:04:07.003Z">
 <meta property="article:author" content="Mr.WangLi">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="javascript">
@@ -43,6 +43,12 @@
         <meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg"/>
     
     
+        <meta property="og:image" content="https://api.dujin.org/bing/1366.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://api.dujin.org/bing/1366.php"/>
+    
+    
+        <meta property="og:image" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
     
     
     <!--STYLES-->
@@ -70,7 +76,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +109,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -282,27 +288,31 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--full"
+             style="background-image:url('http://pic.tsmp4.net/api/fengjing/img.php');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
     
         <h1 class="post-title">
-            (无标题)
+            Zookeeper
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2024-09-01T11:34:06+08:00">
+    <time datetime="2019-12-30T21:30:21+08:00">
 	
-		    2024 年 9 月 1 日
+		    2019 年 12 月 30 日
     	
     </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/zookeeper/">zookeeper</a>
+
+
     
 </div>
 
@@ -316,11 +326,160 @@
     
 </div>
 
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">再繁忙的学习，也需要静一会下来，放松自己，欣赏美丽的风景</span>
+    
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>title: Page not found<br>meta: false<br>actions: false<br>comments: false</p>
+            <!-- excerpt -->
+<h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-text">基本数据模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">数据模型的基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="toc-text">客户端连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bznode%E7%BB%93%E6%9E%84"><span class="toc-text">查看znode结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="toc-text">关闭客户端连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk%E7%9A%84%E4%BD%9C%E7%94%A8%E4%BD%93%E7%94%A8"><span class="toc-text">zk的作用体用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-text">zk常用命令行操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk%E7%89%B9%E6%80%A7"><span class="toc-text">zk特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-text">Session的基本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Watcher%E6%9C%BA%E5%88%B6"><span class="toc-text">Watcher机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Watcher%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AD%A6%E4%B9%A0"><span class="toc-text">Watcher命令行学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#watcher%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">watcher事件类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#watcher%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">watcher使用场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACL%EF%BC%88ACCESS-CONTROL-LISTS%EF%BC%89%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-text">ACL（ACCESS CONTROL LISTS）权限控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACL%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="toc-text">ACL命令行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACL%E7%9A%84%E6%9E%84%E6%88%90"><span class="toc-text">ACL的构成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Scheme"><span class="toc-text">Scheme</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Permissions"><span class="toc-text">Permissions</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ALC%E7%9A%84%E5%B8%B8%E7%94%A8%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">ALC的常用使用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk%E5%9B%9B%E5%AD%97%E5%91%BD%E4%BB%A4Four-Letter-Words"><span class="toc-text">zk四字命令Four Letter Words</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E5%AD%97%E5%91%BD%E4%BB%A4%E7%AE%80%E4%BB%8B"><span class="toc-text">四字命令简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA"><span class="toc-text">zk集群搭建</span></a></li></ol>
 
+<h2 id="基本数据模型"><a href="#基本数据模型" class="headerlink" title="基本数据模型"></a>基本数据模型</h2><ol>
+<li>是一个树形结构，类似前端开发中的tree.js组件，zk的数据模型也可以理解为linux的文件目录：&#x2F;usr&#x2F;local&#x2F;…</li>
+<li>每一个节点都称之为znode，它可以有子节点，也可以有数据</li>
+<li>每个节点分为临时节点和永久节点，临时节点在客户端断开后消失</li>
+<li>每个zk节点都有各自的版本号，可以通过命令行来显示节点信息</li>
+<li>每当节点数据发生变化，那么该节点的版本号会累加（乐观锁）</li>
+<li>删除、修改过时节点，版本号不匹配则会报错</li>
+<li>每个zk节点存储的数据不宜过大，几K即可</li>
+<li>节点可以设置权限acl，可以通过权限来限制用户的访问</li>
+</ol>
+<h2 id="数据模型的基本操作"><a href="#数据模型的基本操作" class="headerlink" title="数据模型的基本操作"></a>数据模型的基本操作</h2><h3 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./zkServer.sh start</span><br><span class="line">./zkCli.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">通过<span class="built_in">help</span>查看命令</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看znode结构"><a href="#查看znode结构" class="headerlink" title="查看znode结构"></a>查看znode结构</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">返回 /zookeeper</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭客户端连接"><a href="#关闭客户端连接" class="headerlink" title="关闭客户端连接"></a>关闭客户端连接</h3><p>关闭客户端一般直接<code>Ctrl+C</code>即可。</p>
+<h2 id="zk的作用体用"><a href="#zk的作用体用" class="headerlink" title="zk的作用体用"></a>zk的作用体用</h2><ol>
+<li>master节点选举，主节点挂了以后，从节点就会接受工作，并且保证这个节点是唯一的，这也是所谓首脑模式，从而保证我们的集群是高可用的。</li>
+<li>统一配置文件管理，即只需要部署一台服务器，则可以把相同的配置文件同步更新到其他所有服务器，此操作在云计算中用的特别多。</li>
+<li>发布与订阅，类似消息队列MQ(amq,rmq…),dubbo发布者把数据存在znode上，订阅者会读取这个数据。</li>
+<li>提供分布式锁，分布式环境中不同进程之间争夺资源，类似于多线程中的锁。</li>
+<li>集群管理，集群中保证数据的强一致性。</li>
+</ol>
+<h2 id="zk常用命令行操作"><a href="#zk常用命令行操作" class="headerlink" title="zk常用命令行操作"></a>zk常用命令行操作</h2><ol>
+<li>通过<code>./zkCli.sh</code>打开zk的客户端进行命令行后台。</li>
+<li>ls与ls2：ls是查看节点的信息，而ls2则是ls+stat命令的整合命令。</li>
+<li>get与stat：get是获取节点的数据，并且会打印出节点的信息，stat则是直接打印节点信息，我们来看下节点信息中包含了什么</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cZxid    # 节点创建后，zk为这个节点分配的id</span><br><span class="line">ctime    # 创建时间</span><br><span class="line">mZxid    # 节点修改后的id，前缀的m代表modify</span><br><span class="line">mtime    # 节点修改时间</span><br><span class="line">pZxid    # 子节点id</span><br><span class="line">cversion # 子节点的version</span><br><span class="line">dataVersion # 数据版本号，数据修改后，版本号会加1</span><br><span class="line">aclVersion  # 权限版本号</span><br><span class="line">ephemeralOwner # 显示当前节点是临时节点还是永久节点，0x0是永久节点，0x1...是临时节点</span><br><span class="line">dataLength  # 数据长度</span><br><span class="line">numChildren # 子节点的数量</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>create：语法create [-s] [-e] path data acl;-e为临时节点，-s为顺序节点</li>
+<li>set：语法set path data [version];version主要用于乐观锁</li>
+<li>delete：语法delete path [version];version语义与set一致</li>
+</ol>
+<h2 id="zk特性"><a href="#zk特性" class="headerlink" title="zk特性"></a>zk特性</h2><h3 id="Session的基本原理"><a href="#Session的基本原理" class="headerlink" title="Session的基本原理"></a>Session的基本原理</h3><ol>
+<li>客户端与服务端之间的连接存在会话</li>
+<li>每个会话都可以设置一个超时时间</li>
+<li>心跳结束，session则过期</li>
+<li>Session过期，则临时节点znode会被抛弃</li>
+<li>心跳机制：客户端向服务端的ping包请求</li>
+</ol>
+<h3 id="Watcher机制"><a href="#Watcher机制" class="headerlink" title="Watcher机制"></a>Watcher机制</h3><ol>
+<li>针对每个节点的操作，都会有一个监督者-&gt;wather</li>
+<li>当监控的某个对象（znode）发生了变化，则出发watcher事件</li>
+<li>zk中的watcher是一次性的，触发后立即销毁</li>
+<li>父节点，子节点增删改都能够触发其watcher</li>
+<li>针对不同类型的操作，触发的watcher事件也不同：</li>
+</ol>
+<ul>
+<li>（子）节点创建事件</li>
+<li>（子）节点删除事件</li>
+<li>（子）节点数据变化事件</li>
+</ul>
+<h3 id="Watcher命令行学习"><a href="#Watcher命令行学习" class="headerlink" title="Watcher命令行学习"></a>Watcher命令行学习</h3><ol>
+<li>通过get path [watch]设置watcher</li>
+<li>父节点增删改操作都可以触发watcher</li>
+<li>子节点增删改操作也都可以触发watcher</li>
+</ol>
+<h4 id="watcher事件类型"><a href="#watcher事件类型" class="headerlink" title="watcher事件类型"></a>watcher事件类型</h4><p><strong>父节点</strong></p>
+<ol>
+<li>创建父节点触发：NodeCreated，可以通过stat path [watch]来给指定path绑定事件，path不存在也可以提前创建事件。</li>
+<li>修改父节点数据触发：NodeDataChanged，也可以利用get path [watch]来绑定事件。</li>
+<li>删除父节点触发：NodeDeleted。</li>
+<li>ls为父节点设置watcher，创建子节点触发：NodeChildrenChanged</li>
+<li>ls为父节点设置watcher，删除子节点触发：NodeChildrenChanged</li>
+<li>ls为父节点设置watcher，修改子节点不触发事件，需要把子节点当成父节点来进行事件绑定</li>
+</ol>
+<h4 id="watcher使用场景"><a href="#watcher使用场景" class="headerlink" title="watcher使用场景"></a>watcher使用场景</h4><ol>
+<li>统一资源配置</li>
+</ol>
+<h3 id="ACL（ACCESS-CONTROL-LISTS）权限控制"><a href="#ACL（ACCESS-CONTROL-LISTS）权限控制" class="headerlink" title="ACL（ACCESS CONTROL LISTS）权限控制"></a>ACL（ACCESS CONTROL LISTS）权限控制</h3><ol>
+<li>针对节点可以设置相关读写等权限，目的为了保障数据安全性</li>
+<li>权限permissions可以指定不同的权限范围以及角色</li>
+</ol>
+<h3 id="ACL命令行"><a href="#ACL命令行" class="headerlink" title="ACL命令行"></a>ACL命令行</h3><ol>
+<li>getAcl：获取某个节点的acl权限信息，语法 getAcl path</li>
+<li>setAcl：设置某个节点的acl权限信息，语法 setAcl path acl</li>
+<li>addauth：输入认证授权信息，注册时输入明文密码（登录），但是在zk的系统里，密码是以加密的形式存在的。语法：addauth scheme auth</li>
+</ol>
+<h3 id="ACL的构成"><a href="#ACL的构成" class="headerlink" title="ACL的构成"></a>ACL的构成</h3><ol>
+<li>zk的acl通过[scheme:ip:permissions]来构成权限列表</li>
+</ol>
+<ul>
+<li>scheme：代表采用的某种权限机制</li>
+<li>ip：代表允许访问的用户ip</li>
+<li>permissions：权限组合字符</li>
+</ul>
+<h4 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h4><ol>
+<li>world：world下只有一个id，即只要一个用户，也就是anyone，那么组合的写法就是world:anayone:[permissions]</li>
+<li>auth：代表认证登录，需要注册用户有权限就可以，形式为auth:user:password:[permissions]</li>
+<li>digest：需要对密码加密才能访问，组合形式为：digest:username:BASE64(SHA1(password)):[permissions]</li>
+</ol>
+<blockquote>
+<p>简而言之，auth与digest的区别就是，前者明文，后者密文setAcl &#x2F;path auth:lee:lee:cdrwa与setAcl &#x2F;path digest:lee:BASE64(SHA1(<br>password))cdrwa是等价的，在通过addauth digest lee:lee后都能操作指定节点的权限</p>
+</blockquote>
+<ol start="4">
+<li>ip：当设置为ip指定的ip地址，此时限制ip进行访问，比如ip：192.168.1.1:[permissions]</li>
+<li>super：代表超级管理员，拥有所有的权限</li>
+</ol>
+<blockquote>
+<p>使用super是要进行两步<br>1.修改zkServer.sh增加super管理员，在文件中搜索nohup，增加如下代码<br><code>-Dzookeeper.DigestAuthenticationProvider.superDigest=username:password</code><br>2.重启zkServer.sh</p>
+</blockquote>
+<h4 id="Permissions"><a href="#Permissions" class="headerlink" title="Permissions"></a>Permissions</h4><blockquote>
+<p>权限字符串缩写：crdwa</p>
+</blockquote>
+<ol>
+<li>create：创建子节点</li>
+<li>read：获取节点、子节点</li>
+<li>write：设置节点数据</li>
+<li>delete：删除子节点</li>
+<li>admin：设置权限</li>
+</ol>
+<h3 id="ALC的常用使用场景"><a href="#ALC的常用使用场景" class="headerlink" title="ALC的常用使用场景"></a>ALC的常用使用场景</h3><ol>
+<li>开发&#x2F;测试环境分离，开发者无权限操作测试库的节点，只能看</li>
+<li>生产环境上控制指定ip的服务可以访问相关节点，防止混乱</li>
+</ol>
+<h2 id="zk四字命令Four-Letter-Words"><a href="#zk四字命令Four-Letter-Words" class="headerlink" title="zk四字命令Four Letter Words"></a>zk四字命令Four Letter Words</h2><ol>
+<li>zk可以通过它自身提供的简写命令来和服务器进行交互</li>
+<li>需要使用到nc命令，安装：yum install nc</li>
+<li>echo [command] | nc [ip] [port]</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.5.6/zookeeperAdmin.html#sc_4lw">参考官网链接</a></p>
+<h3 id="四字命令简介"><a href="#四字命令简介" class="headerlink" title="四字命令简介"></a>四字命令简介</h3><ol>
+<li>stat 查看zk的状态信息，以及是否standalone mode</li>
+<li>ruok 查看当前zkserver是否启动，返回imok。</li>
+<li>dump 列出未经处理的会话和临时节点</li>
+<li>conf 查看服务器配置</li>
+<li>cons 展示连接到服务器的客户端信息</li>
+<li>envi 环境变量</li>
+<li>mntr 监控zk健康信息</li>
+<li>wchs 展示watch的信息</li>
+<li>wchc与wchp： session与watch及path与watch信息，注意3.4.10版本以上默认是不开启这两个命令，需要从zoo.conf文件中添加<br><code>4lw.commands.whitelist</code></li>
+</ol>
+<h2 id="zk集群搭建"><a href="#zk集群搭建" class="headerlink" title="zk集群搭建"></a>zk集群搭建</h2><ol>
+<li>zk集群，主从节点，心跳机制（选举模式）</li>
+</ol>
             
 
 
@@ -345,13 +504,13 @@
 	max-width: 850px;}
 </style>
 <div class="article-footer-copyright">
-    <!-- <span>本文标题:</span><href="/%20"> </a><br/> -->
+    <!-- <span>本文标题:</span><href="/%20"> Zookeeper</a><br/> -->
     <!-- <span>文章作者:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/> -->
 	<span>版权归属:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/>
-    <span>发布时间:</span>2024年09月01日 - 11:34 | 
-    <span>最后更新:</span>2024年09月01日 - 11:34<br/>
-    <span>原始链接:</span><a href="/404.html" title="">https://blog.biwin.eu.org/404.html</a><br/>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.biwin.eu.org/404.html"  aria-label="复制成功！"></i></span><br/>
+    <span>发布时间:</span>2019年12月30日 - 21:30 | 
+    <span>最后更新:</span>2024年09月01日 - 21:04<br/>
+    <span>原始链接:</span><a href="/posts/b829b66a.html" title="Zookeeper">https://blog.biwin.eu.org/posts/b829b66a.html</a><br/>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.biwin.eu.org/posts/b829b66a.html"  aria-label="复制成功！"></i></span><br/>
     <span>许可协议:</span><i class="fab fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">知识共享署名4.0 国际许可协议</a> 转载请保留原文链接及作者。
 </div>
 
@@ -365,22 +524,28 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/6d490a08.html"
+                    data-tooltip="BlockingQueue (阻塞队列详解)"
+                    aria-label="上一篇: BlockingQueue (阻塞队列详解)"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/4e3779c6.html"
+                    data-tooltip="HashMap为什么线程不安全"
+                    aria-label="下一篇: HashMap为什么线程不安全"
+                >
+                    
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
@@ -403,7 +568,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/404.html"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/b829b66a.html"
                     title="分享到 Weibo"
                     aria-label="分享到 Weibo"
                 >
@@ -416,7 +581,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/404.html&amp;title="
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/b829b66a.html&amp;title=Zookeeper"
                     title="分享到 QQ"
                     aria-label="分享到 QQ"
                 >
@@ -429,7 +594,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/404.html"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/b829b66a.html"
                     title="分享到 Qzone"
                     aria-label="分享到 Qzone"
                 >
@@ -442,7 +607,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -483,6 +648,154 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/6d490a08.html"
+                    data-tooltip="BlockingQueue (阻塞队列详解)"
+                    aria-label="上一篇: BlockingQueue (阻塞队列详解)"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/4e3779c6.html"
+                    data-tooltip="HashMap为什么线程不安全"
+                    aria-label="下一篇: HashMap为什么线程不安全"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/b829b66a.html"
+                    title="分享到 Weibo"
+                    aria-label="分享到 Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/b829b66a.html&amp;title=Zookeeper"
+                    title="分享到 QQ"
+                    aria-label="分享到 QQ"
+                >
+                    <i class="fab fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/b829b66a.html"
+                    title="分享到 Qzone"
+                    aria-label="分享到 Qzone"
+                >
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/b829b66a.html"
+                        aria-label="分享到 Weibo"
+                    >
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到 Weibo</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/b829b66a.html&amp;title=Zookeeper"
+                        aria-label="分享到 QQ"
+                    >
+                        <i class="fab fa-qq" aria-hidden="true"></i><span>分享到 QQ</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/b829b66a.html"
+                        aria-label="分享到 Qzone"
+                    >
+                        <i class="fa fa-star" aria-hidden="true"></i><span>分享到 Qzone</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
