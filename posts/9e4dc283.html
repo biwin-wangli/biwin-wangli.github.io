@@ -1,0 +1,1202 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="BiWin&#39;s Blog">
+    <title>Tag Plugins Showcase - BiWin&#39;s Blog</title>
+    <meta name="author" content="Mr.WangLi">
+    
+        <meta name="keywords" content="Hexo,javascript,java,docker,kubernetes,jvm,mysql,nodejs,vue,mybatis,tranquilpeak">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"articleBody":"\n\n\nAlertalertsyntax123&#123;% alert [classes] %&#125;content&#123;% endalert %&#125;\n\n\n\n\nArgument\nDescription\nDemo｜\n\n\n\nClasses\ninfo\ninfo Alert\n\n\n\nClasses\nsuccess\nsuccess Alert\n\n\n\nClasses\nwarning\nwarning Alert \n\n\n\nClasses\ndanger\ndanger Alert \n\n\n\nClasses\nno-icon\nno-icon Alert \n\n\n\n块引用Block-Quotesyntax123&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;content&#123;% endblockquote %&#125;\n\n普通块引用normaleg123&#123;% blockquote %&#125;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.&#123;% endblockquote %&#125;\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nectempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.\n\n\n引用书籍form-a-bookeg123&#123;% blockquote David Levithan, Wide Awake %&#125;Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.&#123;% endblockquote %&#125;\n\nDo not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.\nDavid LevithanWide Awake\n\n引用 Twitterform-twittereg123&#123;% blockquote @DevDocs https://twitter.com/devdocs/status/356095192085962752 %&#125;NEW: DevDocs now comes with syntax highlighting. http://devdocs.io&#123;% endblockquote %&#125;\n\nNEW: DevDocs now comes with syntax highlighting. http://devdocs.io\n@DevDocstwitter.com/devdocs/status/356095192085962752\n\n引用网上的文章form-twittereg123&#123;% blockquote Seth Godin http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html Welcome to Island Marketing %&#125;Every interaction is both precious and an opportunity to delight.&#123;% endblockquote %&#125;\n\nEvery interaction is both precious and an opportunity to delight.\nSeth GodinWelcome to Island Marketing\n\n代码块Code-Blockeg123&#123;% codeblock [title] [lang:language] [url] [link text] [additional options] %&#125;code snippet&#123;% endcodeblock %&#125;\n\n\n\n\nExtra Options\nDescription\nDefault\n\n\n\nline_number\nShow line number\ntrue\n\n\nline_threshold\nOnly show line numbers as long as the numbers of lines of the code block exceed such threshold.\n0\n\n\nhighlight\nEnable code highlighting\ntrue\n\n\nfirst_line\nSpecify the first line number\n1\n\n\nmark\nLine highlight specific line(s), each value separated by a comma. Specify the number range using a dash Example: mark:1,4-7,10 will mark lines 1, 4 to 7 and 10.\n\n\n\nwrap\nWrap the code block in &lt;table&gt;\ntrue\n\n\n普通代码块Normal-code-blockeg123&#123;% codeblock %&#125;alert(&#x27;Hello World!&#x27;);&#123;% endcodeblock %&#125;\n\n1alert(&#x27;Hello World!&#x27;);\n\n指定语言代码块Normal-code-blockeg123456&#123;% codeblock lang:java %&#125;    public void method() &#123;        int a=0;        system.out.println(a);    &#125;&#123;% endcodeblock %&#125;\n\n1234public void method() &#123;int a=0;system.out.println(a);&#125;\n\n带有标题的块With-captioneg123&#123;% codeblock Array.map %&#125;array.map(callback[, thisArg])&#123;% endcodeblock %&#125;\n\nArray.map1array.map(callback[, thisArg])\n\n带有标题和 URL 的块With-caption-and-URLeg1234&#123;% codeblock _.compact http://underscorejs.org/#compact Underscore.js %&#125;_.compact([0, 1, false, 2, &#x27;&#x27;, 3]);=&gt; [1, 2, 3]&#123;% endcodeblock %&#125;\n\n_.compactUnderscore.js12_.compact([0, 1, false, 2, &#x27;&#x27;, 3]);=&gt; [1, 2, 3]\n\n带有 Tab 页的代码块With-caption-and-URLeg12345&#123;% tabbed_codeblock [name] [link] %&#125;&lt;!-- tab [lang] --&gt;source code&lt;!-- endtab --&gt;&#123;% endtabbed_codeblock %&#125;\n\nexamplejscsshtmlfunction $initHighlight(block, flags) {\ntry {\n    if (block.className.search(/\\bno\\-highlight\\b/) != -1)\n        return processBlock(block.function, true, 0x0F) + ' class=\"\"';\n    } catch (e) {\n        /* handle exception */\n        var e4x = &lt;div&gt;Example&lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;\n}\n\nfor (var i = 0 / 2; i &lt; classes.length; i++) { // \"0 / 2\" should not be parsed as regexp\n    if (checkCondition(classes[i]) === undefined)\n        return /\\d+[\\s/]/g;\n    }\n    console.log(Array.every(classes, Boolean));\n}@media screen and (-webkit-min-device-pixel-ratio: 0) {\n    body:first-of-type pre::after {\n    content: 'highlight: ' attr(class);\n}\nbody {\n    background: linear-gradient(45deg, blue, red);\n    }\n}\n\n@import url('print.css');\n@page:right {\n    margin: 1cm 2cm 1.3cm 4cm;\n}\n\n@font-face {\n    font-family: Chunkfive; src: url('Chunkfive.otf');\n}\n\ndiv.text,\n#content,\nli[lang=ru] {\n    font: Tahoma, Chunkfive, sans-serif;\n    background: url('hatch.png') /* wtf? */;  color: #F0F0F0 !important;\n    width: 100%;\n}&lt;?xml version=\"1.0\"?&gt;\n&lt;response value=\"ok\" xml:lang=\"en\"&gt;\n&lt;text&gt;Ok&lt;/text&gt;\n&lt;comment html_allowed=\"true\"/&gt;\n&lt;ns1:description&gt;&lt;![CDATA[\n  CDATA is &lt;not&gt; magical.\n  ]]&gt;&lt;/ns1:description&gt;\n&lt;a&gt;&lt;/a&gt; &lt;a/&gt;\n&lt;/response&gt;\n\n&lt;!DOCTYPE html&gt;\n&lt;title&gt;Title&lt;/title&gt;\n&lt;style&gt;body {width: 500px;}&lt;/style&gt;\n&lt;script type=\"application/javascript\"&gt;\n  function $init() {return true;}\n&lt;/script&gt;\n\n&lt;body&gt;\n  &lt;p checked class=\"title\" id='title'&gt;Title&lt;/p&gt;\n  &lt;!-- here goes the rest of the page --&gt;\n&lt;/body&gt;\n\nGithub 代码片段展示Gisteg1&#123;% gist gist_id [filename] %&#125;\n\nGithub Gist 被墙的厉害，请直接参考上面的语法使用，这里不展示实际效果了，不然页面就不再往下渲染了。更多高级用法参考插件仓库说明\n\nImageCode-Blockeg1&#123;% image [classes] group:group-name /path/to/image [/path/to/thumbnail] [width of thumbnail] [height of thumbnail] [title text] %&#125;\n\n\n\n\nArgument\nDescription\n\n\n\nClasses (optional)\nYou can add css classes to stylize the image. Separate class with whitespace. Tranquilpeak integrate many css class to create nice effects: - fancybox : Generate a fancybox image. - nocaption : Caption of the image will not be displayed. - left : Image will float at the left. - right : Image will float at the right. - center : Image will be at center. - fig-20 : Image will take 20% of the width of post width and automatically float at left. - fig-25 : Image will take 25% of the width of post width and automatically float at left. - fig-33 : Image will take 33% of the width of post width and automatically float at left. - fig-50 : Image will take 50% of the width of post width and automatically float at left. - fig-75 : Image will take 75% of the width of post width and automatically float at left. - fig-100 : Image will take 100% of the width of post width. - clear : Add a div with clear:both; style attached after the image to retrieve the normal flow of the post.\n\n\nGroup (optional)\nName of a group, used to create a gallery. Only for image with fancybox css class\n\n\nOrignal image\nPath to the original image.\n\n\nThumbnail image (optional)\nPath to the thumbnail image. If empty, the orignal image will be displayed.\n\n\nWidth of thumbnail image (optional)\nWidth to the thumbnail image. If the thumbnail image is empty, width will be attached to thumbnail image created from original image. E.g : 150px or 85%.\n\n\nHeight of thumbnail image (optional)\nHeight to the thumbnail image. If the thumbnail image is empty, height will be attached to thumbnail image created from original image. E.g : 300px or 20%.\n\n\nTitle (optional)\nTitle of image displayed in a caption under image. Alt HTML attribute will use this title. E.g : &quot;A beautiful sunrise&quot;.\n\n\nCode-Blockeg12345678&#123;% image fancybox clear group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;&#123;% image fancybox fig-50 left group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;&#123;% image fancybox fig-50 right clear group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;&#123;% image fancybox fig-25 left group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;&#123;% image fancybox fig-75 right group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;&#123;% image fancybox fig-25 left group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;&#123;% image fancybox fig-25 left clear group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;\nA beautiful sunrise\nA beautiful sunrise\nA beautiful sunrise\n\n\n\n\n\n\nPull QuoteCode-Blockegleftright123&#123;% pullquote [class] %&#125;content&#123;% endpullquote %&#125;123&#123;% pullquote left %&#125;content&#123;% endpullquote %&#125;123&#123;% pullquote right %&#125;content&#123;% endpullquote %&#125;\n\n老版《Java编程思想》（原书名《Thinking in Java》）得益作者开放深度研讨的创作方式，受到了全世界读者的追捧，被译为了十几种语言。但遗憾的是，在经历了4 个版本的更新后，其最后一版发布于 2007 年，之后再无更新。\nHere is a pullquote left. 左侧的 Pull Quote.\n\n直至 Java 8 发布，随着大量新特性的发布，原书作者 Bruce Eckel 觉得很有必要重塑这本经典的《Java编程思想》，于是重新动笔完成了最新版本《OnJava》， 一经发布就得到了读者的高度关注。\nHere is a pullquote right. 右侧的 Pull Quote.\n\n从我学习Java的经验来看，《Thinking in Java》是讲解Java编程的最佳书籍！这本书不仅详细地介绍Java语法、知识点、API类库使用，更重要的是对JavaOOP编程思想娓娓道来，让读者在潜移默化中理解了OOP思想，这是在其他编程书籍很少能见到的。在这点上不得不慨叹BruceEckel在讲解OOP编程思想方面有很高的天赋！\nHighlight textCode-Blockeg123&#123;% hl_text [(classes | hexa code | rgb color | rgba color)] %&#125; content&#123;% endhl_text %&#125;\n\n\n\n\nArgument\nDescription\nDemo\n\n\n\nClasses\nred\nyour highlighted text \n\n\nClasses\ngreen\nyour highlighted text\n\n\nClasses\nblue\nyour highlighted text\n\n\nClasses\npurple\nyour highlighted text\n\n\nClasses\norange\nyour highlighted text\n\n\nClasses\nyellow\nyour highlighted text\n\n\nClasses\ncyan\nyour highlighted text\n\n\nClasses\nparimay\nyour highlighted text\n\n\nClasses\nsuccess\nyour highlighted text\n\n\nClasses\nwaring\nyour highlighted text\n\n\nClasses\ndanger\nyour highlighted text\n\n\nClasses\ncolor(#00FFFF)\nyour highlighted text\n\n\nClasses\nrgb color(rgb(66,185,131))\nyour highlighted text\n\n\n永和九年，岁在癸丑，暮春之初，会于会稽山阴之兰亭，修禊事也。群贤毕至，少长咸集。此地有崇山峻岭，茂林修竹；又有清流激湍，映带左右，引以为流觞曲水，列坐其次。虽无丝竹管弦之盛，一觞一咏，亦足以畅叙幽情。是日也，天朗气清，惠风和畅，仰观宇宙之大，俯察品类之盛，所以游目骋怀，足以极视听之娱，信可乐也。\n\n夫人之相与，俯仰一世，或取诸怀抱，悟言一室之内；或因寄所托，放浪形骸之外。虽趣舍万殊，静躁不同，当其欣于所遇，暂得于己，快然自足，曾不知老之将至。及其所之既倦，情随事迁，感慨系之矣。向之所欣，俯仰之间，已为陈迹，犹不能不以之兴怀。况修短随化，终期于尽。古人云：“死生亦大矣。”岂不痛哉！\n每览昔人兴感之由，若合一契，未尝不临文嗟悼，不能喻之于怀。固知一死生为虚诞，齐彭殇为妄作。后之视今，亦犹今之视昔。悲夫！故列叙时人，录其所述，虽世殊事异，所以兴怀，其致一也。 后之览者，亦将有感于斯文。\nYoutube\n国内被墙，不做效果演示。更多高级用法参考插件仓库说明\n\nVideo\n\n\nYour browser doesn't support HTML5 Video :/\nPoster (Thumbnail) Enabled\n\n\nWide imageCode-Blockeg1&#123;% wide_image /path/to/image [title text] %&#125;\n\n\n\n\nArgument\nDescription\n\n\n\nImage\nPath to the original image.\n\n\nTitle(optional)\nTitle of image displayed in a caption under image. Alt HTML attribute will use this title. E.g : &quot;A beautiful sunrise&quot;.\n\n\nCode-Blockeg1&#123;% wide_image https://5b868fd.webp.li/car.jpg &quot;A beautiful sunrise&quot; %&#125;\n\nA beautiful sunrise","dateCreated":"2024-09-01T14:42:32+08:00","dateModified":"2024-09-01T17:47:17+08:00","datePublished":"2024-09-01T14:42:32+08:00","description":"本文主要展示 tranquilpeak 主题为我们提供的一些插件功能如何使用，以及效果展示～！","headline":"Tag Plugins Showcase","image":["https://api.dujin.org/bing/1366.php","http://pic.tsmp4.net/api/fengjing/img.php"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.biwin.eu.org/posts/9e4dc283.html"},"publisher":{"@type":"Organization","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg","logo":{"@type":"ImageObject","url":"https://img.biwin.eu.org/touxiang.jpeg"}},"url":"https://blog.biwin.eu.org/posts/9e4dc283.html","keywords":"theme","thumbnailUrl":"https://api.dujin.org/bing/1366.php"}</script>
+    <meta name="description" content="该主题中可用的 Tag 插件使用示例">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Tag Plugins Showcase">
+<meta property="og:url" content="https://blog.biwin.eu.org/posts/9e4dc283.html">
+<meta property="og:site_name" content="BiWin&#39;s Blog">
+<meta property="og:description" content="该主题中可用的 Tag 插件使用示例">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+<meta property="og:image" content="https://5b868fd.webp.li/car.jpg">
+<meta property="article:published_time" content="2024-09-01T06:42:32.000Z">
+<meta property="article:modified_time" content="2024-09-01T09:47:17.285Z">
+<meta property="article:author" content="Mr.WangLi">
+<meta property="article:tag" content="theme">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.biwin.eu.org/touxiang.jpeg">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg"/>
+    
+    
+        <meta property="og:image" content="https://api.dujin.org/bing/1366.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://api.dujin.org/bing/1366.php"/>
+    
+    
+        <meta property="og:image" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-k6rsfd143zx7ziypq1w0mizwe8aygzbk7y5dslj5xuod6tidcl7nnplzbm4g.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            BiWin&#39;s Blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="打开链接: /#about"
+            >
+        
+        
+            <img class="header-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">Mr.WangLi</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>喜欢技术，喜欢一个人！</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="搜索"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/biwin-wangli"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="mailto:274027703@qq.com"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="邮箱"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=3132987672&auto=1&height=90"></iframe>
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--full"
+             style="background-image:url('http://pic.tsmp4.net/api/fengjing/img.php');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Tag Plugins Showcase
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2024-09-01T14:42:32+08:00">
+	
+		    2024 年 9 月 1 日
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/hexo/">hexo</a>
+
+
+    
+</div>
+
+        
+    
+    
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="post-meta">
+	        <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+	    </span>
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">再繁忙的学习，也需要静一会下来，放松自己，欣赏美丽的风景</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Alert"><span class="toc-text">Alert</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9D%97%E5%BC%95%E7%94%A8"><span class="toc-text">块引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%9D%97%E5%BC%95%E7%94%A8"><span class="toc-text">普通块引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E4%B9%A6%E7%B1%8D"><span class="toc-text">引用书籍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8-Twitter"><span class="toc-text">引用 Twitter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E7%BD%91%E4%B8%8A%E7%9A%84%E6%96%87%E7%AB%A0"><span class="toc-text">引用网上的文章</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">代码块</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">普通代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E8%AF%AD%E8%A8%80%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">指定语言代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9C%89%E6%A0%87%E9%A2%98%E7%9A%84%E5%9D%97"><span class="toc-text">带有标题的块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9C%89%E6%A0%87%E9%A2%98%E5%92%8C-URL-%E7%9A%84%E5%9D%97"><span class="toc-text">带有标题和 URL 的块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9C%89-Tab-%E9%A1%B5%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">带有 Tab 页的代码块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5%E5%B1%95%E7%A4%BA"><span class="toc-text">Github 代码片段展示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Image"><span class="toc-text">Image</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pull-Quote"><span class="toc-text">Pull Quote</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Highlight-text"><span class="toc-text">Highlight text</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Youtube"><span class="toc-text">Youtube</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Video"><span class="toc-text">Video</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Wide-image"><span class="toc-text">Wide image</span></a></li></ol>
+
+<h1 id="Alert"><a href="#Alert" class="headerlink" title="Alert"></a>Alert</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>alert</span><ul class="tabs"><li class="tab active">syntax</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% alert [classes] %&#125;</span><br><span class="line">content</span><br><span class="line">&#123;% endalert %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+<th>Demo｜</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Classes</td>
+<td>info</td>
+<td><div class="alert info"><p>info Alert</p>
+</div></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>success</td>
+<td><div class="alert success"><p>success Alert</p>
+</div></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>warning</td>
+<td><div class="alert warning"><p>warning Alert </p>
+</div></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>danger</td>
+<td><div class="alert danger"><p>danger Alert </p>
+</div></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>no-icon</td>
+<td><div class="alert no-icon"><p>no-icon Alert </p>
+</div></td>
+</tr>
+</tbody></table>
+<h1 id="块引用"><a href="#块引用" class="headerlink" title="块引用"></a>块引用</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Block-Quote</span><ul class="tabs"><li class="tab active">syntax</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;</span><br><span class="line">content</span><br><span class="line">&#123;% endblockquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<h2 id="普通块引用"><a href="#普通块引用" class="headerlink" title="普通块引用"></a>普通块引用</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>normal</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% blockquote %&#125;</span><br><span class="line">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.</span><br><span class="line">&#123;% endblockquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec<br>tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.</p>
+</blockquote>
+
+<h2 id="引用书籍"><a href="#引用书籍" class="headerlink" title="引用书籍"></a>引用书籍</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>form-a-book</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% blockquote David Levithan, Wide Awake %&#125;</span><br><span class="line">Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.</span><br><span class="line">&#123;% endblockquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<blockquote><p>Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.</p>
+<footer><strong>David Levithan</strong><cite>Wide Awake</cite></footer></blockquote>
+
+<h2 id="引用-Twitter"><a href="#引用-Twitter" class="headerlink" title="引用 Twitter"></a>引用 Twitter</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>form-twitter</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% blockquote @DevDocs https://twitter.com/devdocs/status/356095192085962752 %&#125;</span><br><span class="line">NEW: DevDocs now comes with syntax highlighting. http://devdocs.io</span><br><span class="line">&#123;% endblockquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<blockquote><p>NEW: DevDocs now comes with syntax highlighting. <a target="_blank" rel="noopener" href="http://devdocs.io/">http://devdocs.io</a></p>
+<footer><strong>@DevDocs</strong><cite><a target="_blank" rel="noopener" href="https://twitter.com/devdocs/status/356095192085962752">twitter.com/devdocs/status/356095192085962752</a></cite></footer></blockquote>
+
+<h2 id="引用网上的文章"><a href="#引用网上的文章" class="headerlink" title="引用网上的文章"></a>引用网上的文章</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>form-twitter</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% blockquote Seth Godin http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html Welcome to Island Marketing %&#125;</span><br><span class="line">Every interaction is both precious and an opportunity to delight.</span><br><span class="line">&#123;% endblockquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<blockquote><p>Every interaction is both precious and an opportunity to delight.</p>
+<footer><strong>Seth Godin</strong><cite><a target="_blank" rel="noopener" href="http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html">Welcome to Island Marketing</a></cite></footer></blockquote>
+
+<h1 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock [title] [lang:language] [url] [link text] [additional options] %&#125;</span><br><span class="line">code snippet</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<table>
+<thead>
+<tr>
+<th>Extra Options</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>line_number</td>
+<td>Show line number</td>
+<td>true</td>
+</tr>
+<tr>
+<td>line_threshold</td>
+<td>Only show line numbers as long as the numbers of lines of the code block exceed such threshold.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>highlight</td>
+<td>Enable code highlighting</td>
+<td>true</td>
+</tr>
+<tr>
+<td>first_line</td>
+<td>Specify the first line number</td>
+<td>1</td>
+</tr>
+<tr>
+<td>mark</td>
+<td>Line highlight specific line(s), each value separated by a comma. Specify the number range using a dash Example: <code>mark:1,4-7,10</code> will mark lines 1, 4 to 7 and 10.</td>
+<td></td>
+</tr>
+<tr>
+<td>wrap</td>
+<td>Wrap the code block in <code>&lt;table&gt;</code></td>
+<td>true</td>
+</tr>
+</tbody></table>
+<h2 id="普通代码块"><a href="#普通代码块" class="headerlink" title="普通代码块"></a>普通代码块</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>Normal-code-block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock %&#125;</span><br><span class="line">alert(&#x27;Hello World!&#x27;);</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert(&#x27;Hello World!&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="指定语言代码块"><a href="#指定语言代码块" class="headerlink" title="指定语言代码块"></a>指定语言代码块</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>Normal-code-block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:java %&#125;</span><br><span class="line">    public void method() &#123;</span><br><span class="line">        int a=0;</span><br><span class="line">        system.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="type">int</span> a=<span class="number">0</span>;</span><br><span class="line">system.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="带有标题的块"><a href="#带有标题的块" class="headerlink" title="带有标题的块"></a>带有标题的块</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>With-caption</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock Array.map %&#125;</span><br><span class="line">array.map(callback[, thisArg])</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<figure class="highlight plaintext"><figcaption><span>Array.map</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array.map(callback[, thisArg])</span><br></pre></td></tr></table></figure>
+
+<h2 id="带有标题和-URL-的块"><a href="#带有标题和-URL-的块" class="headerlink" title="带有标题和 URL 的块"></a>带有标题和 URL 的块</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>With-caption-and-URL</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock _.compact http://underscorejs.org/#compact Underscore.js %&#125;</span><br><span class="line">_.compact([0, 1, false, 2, &#x27;&#x27;, 3]);</span><br><span class="line">=&gt; [1, 2, 3]</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<figure class="highlight plaintext"><figcaption><span>_.compact</span><a target="_blank" rel="noopener" href="http://underscorejs.org/#compact">Underscore.js</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_.compact([0, 1, false, 2, &#x27;&#x27;, 3]);</span><br><span class="line">=&gt; [1, 2, 3]</span><br></pre></td></tr></table></figure>
+
+<h2 id="带有-Tab-页的代码块"><a href="#带有-Tab-页的代码块" class="headerlink" title="带有 Tab 页的代码块"></a>带有 Tab 页的代码块</h2><figure class="codeblock codeblock--tabbed"><figcaption><span>With-caption-and-URL</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabbed_codeblock [name] [link] %&#125;</span><br><span class="line">&lt;!-- tab [lang] --&gt;</span><br><span class="line">source code</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabbed_codeblock %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<figure class="codeblock codeblock--tabbed"><figcaption><a href="https://blog.biwin.eu.org">example</a><ul class="tabs"><li class="tab active">js</li><li class="tab">css</li><li class="tab">html</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code>function $initHighlight(block, flags) {
+try {
+    if (block.className.search(/\bno\-highlight\b/) != -1)
+        return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x = &lt;div&gt;Example&lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+}
+
+for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+    if (checkCondition(classes[i]) === undefined)
+        return /\d+[\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}</code></pre><pre style="display: none;"><code>@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    body:first-of-type pre::after {
+    content: 'highlight: ' attr(class);
+}
+body {
+    background: linear-gradient(45deg, blue, red);
+    }
+}
+
+@import url('print.css');
+@page:right {
+    margin: 1cm 2cm 1.3cm 4cm;
+}
+
+@font-face {
+    font-family: Chunkfive; src: url('Chunkfive.otf');
+}
+
+div.text,
+#content,
+li[lang=ru] {
+    font: Tahoma, Chunkfive, sans-serif;
+    background: url('hatch.png') /* wtf? */;  color: #F0F0F0 !important;
+    width: 100%;
+}</code></pre><pre style="display: none;"><code>&lt;?xml version="1.0"?&gt;
+&lt;response value="ok" xml:lang="en"&gt;
+&lt;text&gt;Ok&lt;/text&gt;
+&lt;comment html_allowed="true"/&gt;
+&lt;ns1:description&gt;&lt;![CDATA[
+  CDATA is &lt;not&gt; magical.
+  ]]&gt;&lt;/ns1:description&gt;
+&lt;a&gt;&lt;/a&gt; &lt;a/&gt;
+&lt;/response&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;title&gt;Title&lt;/title&gt;
+&lt;style&gt;body {width: 500px;}&lt;/style&gt;
+&lt;script type="application/javascript"&gt;
+  function $init() {return true;}
+&lt;/script&gt;
+
+&lt;body&gt;
+  &lt;p checked class="title" id='title'&gt;Title&lt;/p&gt;
+  &lt;!-- here goes the rest of the page --&gt;
+&lt;/body&gt;</code></pre></div></figure>
+
+<h1 id="Github-代码片段展示"><a href="#Github-代码片段展示" class="headerlink" title="Github 代码片段展示"></a>Github 代码片段展示</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Gist</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% gist gist_id [filename] %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+<blockquote>
+<p>Github Gist 被墙的厉害，请直接参考上面的语法使用，这里不展示实际效果了，不然页面就不再往下渲染了。<br>更多高级用法参考<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-tag-embed">插件仓库说明</a></p>
+</blockquote>
+<h1 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% image [classes] group:group-name /path/to/image [/path/to/thumbnail] [width of thumbnail] [height of thumbnail] [title text] %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Classes (optional)</td>
+<td>You can add css classes to stylize the image. Separate class with whitespace. Tranquilpeak integrate many css class to create nice effects:<br/> - fancybox : Generate a fancybox image.<br/> - nocaption : Caption of the image will not be displayed.<br/> - left : Image will float at the left.<br/> - right : Image will float at the right.<br/> - center : Image will be at center.<br/> - fig-20 : Image will take 20% of the width of post width and automatically float at left.<br/> - fig-25 : Image will take 25% of the width of post width and automatically float at left.<br/> - fig-33 : Image will take 33% of the width of post width and automatically float at left.<br/> - fig-50 : Image will take 50% of the width of post width and automatically float at left.<br/> - fig-75 : Image will take 75% of the width of post width and automatically float at left.<br/> - fig-100 : Image will take 100% of the width of post width.<br/> - clear : Add a div with clear:both; style attached after the image to retrieve the normal flow of the post.</td>
+</tr>
+<tr>
+<td>Group (optional)</td>
+<td>Name of a group, used to create a gallery. <strong>Only for image with <code>fancybox</code> css class</strong></td>
+</tr>
+<tr>
+<td>Orignal image</td>
+<td>Path to the original image.</td>
+</tr>
+<tr>
+<td>Thumbnail image (optional)</td>
+<td>Path to the thumbnail image. If empty, the orignal image will be displayed.</td>
+</tr>
+<tr>
+<td>Width of thumbnail image (optional)</td>
+<td>Width to the thumbnail image. If the thumbnail image is empty, width will be attached to thumbnail image created from original image. E.g : <code>150px</code> or <code>85%</code>.</td>
+</tr>
+<tr>
+<td>Height of thumbnail image (optional)</td>
+<td>Height to the thumbnail image. If the thumbnail image is empty, height will be attached to thumbnail image created from original image. E.g : <code>300px</code> or <code>20%</code>.</td>
+</tr>
+<tr>
+<td>Title (optional)</td>
+<td>Title of image displayed in a caption under image. Alt HTML attribute will use this title. E.g : <code>&quot;A beautiful sunrise&quot;</code>.</td>
+</tr>
+</tbody></table>
+<figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% image fancybox clear group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;</span><br><span class="line">&#123;% image fancybox fig-50 left group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;</span><br><span class="line">&#123;% image fancybox fig-50 right clear group:travel https://img.biwin.eu.org/touxiang.jpeg &quot;A beautiful sunrise&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% image fancybox fig-25 left group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;</span><br><span class="line">&#123;% image fancybox fig-75 right group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;</span><br><span class="line">&#123;% image fancybox fig-25 left group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;</span><br><span class="line">&#123;% image fancybox fig-25 left clear group:travel https://img.biwin.eu.org/touxiang.jpeg %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+<div class="figure " style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="A beautiful sunrise" data-caption="A beautiful sunrise" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt="A beautiful sunrise"></a><span class="caption">A beautiful sunrise</span></div><div style="clear:both;"></div>
+<div class="figure fig-50 left" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="A beautiful sunrise" data-caption="A beautiful sunrise" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt="A beautiful sunrise"></a><span class="caption">A beautiful sunrise</span></div>
+<div class="figure fig-50 right" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="A beautiful sunrise" data-caption="A beautiful sunrise" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt="A beautiful sunrise"></a><span class="caption">A beautiful sunrise</span></div><div style="clear:both;"></div>
+
+<div class="figure fig-25 left" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="" data-caption="" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt=""></a></div>
+<div class="figure fig-75 right" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="" data-caption="" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt=""></a></div>
+<div class="figure fig-25 left" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="" data-caption="" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt=""></a></div>
+<div class="figure fig-25 left" style="width:;"><a class="fancybox" target="_blank" rel="noopener" href="https://img.biwin.eu.org/touxiang.jpeg" title="" data-caption="" data-fancybox="travel"><img class="fig-img" src="https://img.biwin.eu.org/touxiang.jpeg" alt=""></a></div><div style="clear:both;"></div>
+
+<h1 id="Pull-Quote"><a href="#Pull-Quote" class="headerlink" title="Pull Quote"></a>Pull Quote</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li><li class="tab">left</li><li class="tab">right</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% pullquote [class] %&#125;</span><br><span class="line">content</span><br><span class="line">&#123;% endpullquote %&#125;</span><br></pre></td></tr></table></figure></code></pre><pre style="display: none;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% pullquote left %&#125;</span><br><span class="line">content</span><br><span class="line">&#123;% endpullquote %&#125;</span><br></pre></td></tr></table></figure></code></pre><pre style="display: none;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% pullquote right %&#125;</span><br><span class="line">content</span><br><span class="line">&#123;% endpullquote %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<p>老版《Java编程思想》（原书名《Thinking in Java》）得益作者开放深度研讨的创作方式，受到了全世界读者的追捧，被译为了十几种语言。但遗憾的是，在经历了<br>4 个版本的更新后，其最后一版发布于 2007 年，之后再无更新。</p>
+<blockquote class="pullquote left"><p>Here is a pullquote left. 左侧的 Pull Quote.</p>
+</blockquote>
+<p>直至 Java 8 发布，随着大量新特性的发布，原书作者 Bruce Eckel 觉得很有必要重塑这本经典的《Java编程思想》，于是重新动笔完成了最新版本《On<br>Java》， 一经发布就得到了读者的高度关注。</p>
+<blockquote class="pullquote right"><p>Here is a pullquote right. 右侧的 Pull Quote.</p>
+</blockquote>
+<p>从我学习Java的经验来看，《Thinking in Java》是讲解Java编程的最佳书籍！<br>这本书不仅详细地介绍Java语法、知识点、API类库使用，更重要的是对Java<br>OOP编程思想娓娓道来，让读者在潜移默化中理解了OOP思想，这是在其他编程书籍很少能见到的。在这点上不得不慨叹Bruce<br>Eckel在讲解OOP编程思想方面有很高的天赋！</p>
+<h1 id="Highlight-text"><a href="#Highlight-text" class="headerlink" title="Highlight text"></a>Highlight text</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% hl_text [(classes | hexa code | rgb color | rgba color)] %&#125; </span><br><span class="line">content</span><br><span class="line">&#123;% endhl_text %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+<th>Demo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Classes</td>
+<td>red</td>
+<td><span class="highlight-text red">your highlighted text </span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>green</td>
+<td><span class="highlight-text green">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>blue</td>
+<td><span class="highlight-text blue">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>purple</td>
+<td><span class="highlight-text purple">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>orange</td>
+<td><span class="highlight-text orange">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>yellow</td>
+<td><span class="highlight-text yellow">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>cyan</td>
+<td><span class="highlight-text cyan">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>parimay</td>
+<td><span class="highlight-text parimay">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>success</td>
+<td><span class="highlight-text success">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>waring</td>
+<td><span class="highlight-text waring">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>danger</td>
+<td><span class="highlight-text danger">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>color(#00FFFF)</td>
+<td><span class="highlight-text" style="background-color:#00FFFF;">your highlighted text</span></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>rgb color(rgb(66,185,131))</td>
+<td><span class="highlight-text" style="background-color:rgb(66,185,131);">your highlighted text</span></td>
+</tr>
+</tbody></table>
+<span class="highlight-text red">永和九年</span>，岁在癸丑，暮春之初，会于会稽山阴之兰亭，修禊事也。<span class="highlight-text green">群贤毕至</span>，少长咸集。此地有崇山峻岭，茂林修竹；又有清流激湍，<span class="highlight-text blue">映带左右</span>，引以为流觞曲水，列坐其次。虽无丝竹管弦之盛，<span class="highlight-text purple">一觞一咏</span>，亦足以畅叙幽情。是日也，天朗气清，<span class="highlight-text orange">惠风和畅</span>，仰观宇宙之大，俯察品类之盛，所以游目骋怀，足以极视听之娱，<span class="highlight-text yellow">信可乐也</span>。
+
+<p>夫人之相与，<span class="highlight-text cyan">俯仰一世</span>，或取诸怀抱，悟言一室之内；或因寄所托，放浪形骸之外。虽趣舍万殊，<span class="highlight-text parimay">静躁不同</span>，当其欣于所遇，暂得于己，快然自足，曾不知老之将至。及其所之既倦，<span class="highlight-text success">情随事迁</span>，感慨系之矣。向之所欣，俯仰之间，已为陈迹，犹不能不以之兴怀。况修短随化，<span class="highlight-text waring">终期于尽</span>。古人云：“死生亦大矣。”岂不痛哉！</p>
+<p>每览昔人兴感之由，<span class="highlight-text danger">若合一契</span>，未尝不临文嗟悼，不能喻之于怀。固知一死生为虚诞，齐彭殇为妄作。后之视今，亦犹今之视昔。悲夫！故列叙时人，录其所述，虽世殊事异，<span class="highlight-text" style="background-color:#00FFFF;">所以兴怀</span>，其致一也。 <span class="highlight-text" style="background-color:rgb(66,185,131);">后之览者</span>，亦将有感于斯文。</p>
+<h1 id="Youtube"><a href="#Youtube" class="headerlink" title="Youtube"></a>Youtube</h1><blockquote>
+<p>国内被墙，不做效果演示。<br>更多高级用法参考<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-tag-embed">插件仓库说明</a></p>
+</blockquote>
+<h1 id="Video"><a href="#Video" class="headerlink" title="Video"></a>Video</h1><div class="figure center" style="width:100%"; >
+<video class="fig-video" controls poster="https://img.biwin.eu.org/smile.mp4" alt="Poster (Thumbnail) Enabled">
+<source src="https://img.biwin.eu.org/smile.mp4" type="video/mp4">
+<p>Your browser doesn't support HTML5 Video :/</p></video>
+<span class="caption">Poster (Thumbnail) Enabled</span>
+</div>
+
+<h1 id="Wide-image"><a href="#Wide-image" class="headerlink" title="Wide image"></a>Wide image</h1><figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% wide_image /path/to/image [title text] %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Image</td>
+<td>Path to the original image.</td>
+</tr>
+<tr>
+<td>Title(optional)</td>
+<td>Title of image displayed in a caption under image. Alt HTML attribute will use this title. E.g : <code>&quot;A beautiful sunrise&quot;</code>.</td>
+</tr>
+</tbody></table>
+<figure class="codeblock codeblock--tabbed"><figcaption><span>Code-Block</span><ul class="tabs"><li class="tab active">eg</li></ul></figcaption><div class="tabs-content"><pre style="display: block;"><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% wide_image https://5b868fd.webp.li/car.jpg &quot;A beautiful sunrise&quot; %&#125;</span><br></pre></td></tr></table></figure></code></pre></div></figure>
+
+</div><div class="figure figure--fullWidth"><img class="figure-img" src="https://5b868fd.webp.li/car.jpg" alt="A beautiful sunrise"><span class="caption">A beautiful sunrise</span></div><div class="main-content-wrap">
+            
+
+
+        </div>
+    </div>
+    <br/>
+    <!-- 添加的部分 -->
+    <!-- copyright -->
+    
+        <style>
+.article-footer-copyright {
+	border-left-color: #f66;
+	padding: 12px 24px 12px 30px;
+    margin: 2em 0;
+    border-left-width: 4px;
+    border-left-style: solid;
+    background-color: #f8f8f8;
+    position: relative;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+	margin:0 auto;
+	max-width: 850px;}
+</style>
+<div class="article-footer-copyright">
+    <!-- <span>本文标题:</span><href="/%20"> Tag Plugins Showcase</a><br/> -->
+    <!-- <span>文章作者:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/> -->
+	<span>版权归属:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/>
+    <span>发布时间:</span>2024年09月01日 - 14:42 | 
+    <span>最后更新:</span>2024年09月01日 - 17:47<br/>
+    <span>原始链接:</span><a href="/posts/9e4dc283.html" title="Tag Plugins Showcase">https://blog.biwin.eu.org/posts/9e4dc283.html</a><br/>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.biwin.eu.org/posts/9e4dc283.html"  aria-label="复制成功！"></i></span><br/>
+    <span>许可协议:</span><i class="fab fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">知识共享署名4.0 国际许可协议</a> 转载请保留原文链接及作者。
+</div>
+
+    
+    <!-- copyright -->
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/theme/" rel="tag">theme</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/b132932.html"
+                    data-tooltip="Hexo"
+                    aria-label="下一篇: Hexo"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <br/>
+<div class="vcomment"></div>
+            
+        
+    </div>
+</article>
+
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2024 Mr.WangLi. All Rights Reserved.
+    </span>
+    <br/>
+    
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+	                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+	                本站访客数<span id="busuanzi_value_site_uv"></span>人
+	        </span>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/b132932.html"
+                    data-tooltip="Hexo"
+                    aria-label="下一篇: Hexo"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                    title="分享到 Google+"
+                    aria-label="分享到 Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://blog.biwin.eu.org/posts/9e4dc283.html"
+                        aria-label="分享到 Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://img.biwin.eu.org/touxiang.jpeg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">Mr.WangLi</h4>
+        
+            <div id="about-card-bio"><p>喜欢技术，喜欢一个人！</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>一个有脾气的 Javaer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                中国·四川·成都
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/b132932.html"
+                            aria-label=": Hexo"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/b132932.html"
+                            aria-label=": Hexo"
+                        >
+                            <h3 class="media-heading">Hexo</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2024年9月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather">文章已加密，授权后可查看。</div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/9e4dc283.html"
+                            aria-label=": Tag Plugins Showcase"
+                        >
+                            <img class="media-image" src="https://api.dujin.org/bing/1366.php" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://blog.biwin.eu.org/posts/9e4dc283.html"
+                            aria-label=": Tag Plugins Showcase"
+                        >
+                            <h3 class="media-heading">Tag Plugins Showcase</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2024年9月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>本文主要展示 tranquilpeak 主题为我们提供的一些插件功能如何使用，以及效果展示～！</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 2 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-p1k3dwrrjhqcuvhypupmzhdnm8ov9fcyic01mag8z9ftlragki36xj1it9gs.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '.vcomment',
+                notify: false,
+                verify: false,
+                appId: "6Im09hBEDOiBEU45f3fOc9Hm-gzGzoHsz",
+                appKey: "Tc4aa3tRDVWw4GJEcBNfaAuB",
+                placeholder: "发现问题，讨论问题，反馈问题，欢迎您的留言和评论！",
+                pageSize:'10',
+                avatar:'monsterid',
+                meta: ['nick', 'mail'],
+                lang:''
+            })
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+        var algoliaClient = algoliasearch('I16OUI732Q', 'e1b3e94dd16c5fd972a4f855178f99f8');
+        var algoliaIndex = algoliaClient.initIndex('blog');
+    </script>
+
+
+    </body>
+</html>
