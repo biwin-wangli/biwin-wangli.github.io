@@ -6,32 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="BiWin&#39;s Blog">
-    <title>all-categories - BiWin&#39;s Blog</title>
+    <title>小米 AX1800 永久 SSH - BiWin&#39;s Blog</title>
     <meta name="author" content="Mr.WangLi">
     
-        <meta name="keywords" content="Hexo,javascript,java,docker,kubernetes,jvm,mysql,nodejs,vue,mybatis,">
+        <meta name="keywords" content="Hexo,javascript,java,docker,kubernetes,jvm,mysql,nodejs,vue,mybatis,ssh">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"https://blog.biwin.eu.org","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"name":"BiWin's Blog","description":"一个有脾气的 Javaer","url":"https://blog.biwin.eu.org","keywords":"Hexo, javascript, java, docker, kubernetes, jvm, mysql, nodejs, vue, mybatis"}</script>
-    <meta property="og:type" content="blog">
-<meta property="og:title" content="all-categories">
-<meta property="og:url" content="https://blog.biwin.eu.org/all-categories/index.html">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg"},"articleBody":"\n\n\n原理说明小米路由的系统是基于 OPENWRT 系统上改的，而有个地方是能够做到更新固件的时候保留配置文件，而防火墙文件/etc/config/firewall中恰好有一个配置为用户自定义配置，并且指定了位置为/etc/firewall.user，而且系统默认是有这个文件的，也就是说更新系统不会被删除，而这个防火墙自定义配置，事实上执行的是shell脚本，而且路由器启动防火墙的时候就会执行，也就是说，我们只需要把操作变更为将命令行写入这个配置文件，就能实现路由器重启后自动配置，也能让我们更新系统享受稳定的固件！\n实操下载降级版本首先降级到 1.0.34 版本，通过小米路由管理后台，在“系统状态”中的 tab 页中，找到手动升级，并选择下载好降级包。\n开启 SSH降级后不要升级，先登录网页管理界面，登录后可以在地址栏上是这样的地址\n1http://192.168.31.1/cgi-bin/luci/;stok=XXXXXXXXXXXXXXXXXXXXXXXXXX/web/home#router\n将 XXX 后面的包括斜杠”&#x2F;“在内的所有文字替换成\n1/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20nvram%20set%20ssh_en%3D1%3B%20nvram%20commit%3B%20sed%20-i%20&#x27;s%2Fchannel%3D.*%2Fchannel%3D%5C%22debug%5C%22%2Fg&#x27;%20%2Fetc%2Finit.d%2Fdropbear%3B%20%2Fetc%2Finit.d%2Fdropbear%20start%3B\n回车后会返回\n1&#123;&quot;code&quot;: 0&#125;\n这个时候 SSH 就已经打开了。\n修改 SSH 密码开启 SSH 后，将 XXX 后面的包括斜杠”&#x2F;“在内的所有文字替换成如下以修改密码为admin\n1/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20echo%20-e%20&#x27;admin%5Cnadmin&#x27;%20%7C%20passwd%20root%3B\n\n连接 SSH若要使用 SSH ，用以下代码接口\n1ssh -o HostKeyAlgorithms=ssh-rsa root@192.168.31.1\n修改配置文件，确保永久 SSH原理说明中，描述了有个文件是可以不被更新固件所清除的配置，现在我们对这个文件做相应脚本，确保固件升级后，也会自动执行，从而达到永久开启 SSH。\n\n先打开文件12vi /etc/firewall.user\n在文件内容的最下方加入以下代码1234567#sshnvram set ssh_en=1nvram commitsed -i &#x27;s/channel=.*/channel=&quot;debug&quot;/g&#x27; /etc/init.d/dropbear/etc/init.d/dropbear startecho -e &#x27;admin\\nadmin&#x27; | passwd root\n保存退出该文件先按 ESC退 出 VI 的 insert 或 append 模式，输入以下代码保持退出该文件1:wq\n\n更新固件这个时候我们就可以更新固件了。","dateCreated":"2024-09-09T22:25:34+08:00","dateModified":"2024-09-09T22:44:53+08:00","datePublished":"2024-09-09T22:25:34+08:00","description":"小米 AX1800 可升级的永久 SSH！","headline":"小米 AX1800 永久 SSH","image":["https://bing.img.run/rand_1366x768.php","http://pic.tsmp4.net/api/fengjing/img.php"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.biwin.eu.org/posts/2278835c.html"},"publisher":{"@type":"Organization","name":"Mr.WangLi","sameAs":["https://github.com/biwin-wangli","http://stackoverflow.com/users","https://www.linkedin.com/profile/","mailto:274027703@qq.com"],"image":"https://img.biwin.eu.org/touxiang.jpeg","logo":{"@type":"ImageObject","url":"https://img.biwin.eu.org/touxiang.jpeg"}},"url":"https://blog.biwin.eu.org/posts/2278835c.html","keywords":"ax1800, 小米","thumbnailUrl":"https://bing.img.run/rand_1366x768.php"}</script>
+    <meta name="description" content="小米 AX1800 永久 SSH">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="小米 AX1800 永久 SSH">
+<meta property="og:url" content="https://blog.biwin.eu.org/posts/2278835c.html">
 <meta property="og:site_name" content="BiWin&#39;s Blog">
+<meta property="og:description" content="小米 AX1800 永久 SSH">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-01T03:34:06.399Z">
-<meta property="article:modified_time" content="2024-09-01T03:34:06.399Z">
+<meta property="article:published_time" content="2024-09-09T14:25:34.000Z">
+<meta property="article:modified_time" content="2024-09-09T14:44:53.271Z">
 <meta property="article:author" content="Mr.WangLi">
-<meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="javascript">
-<meta property="article:tag" content="java">
-<meta property="article:tag" content="docker">
-<meta property="article:tag" content="kubernetes">
-<meta property="article:tag" content="jvm">
-<meta property="article:tag" content="mysql">
-<meta property="article:tag" content="nodejs">
-<meta property="article:tag" content="vue">
-<meta property="article:tag" content="mybatis">
+<meta property="article:tag" content="ax1800">
+<meta property="article:tag" content="小米">
 <meta name="twitter:card" content="summary">
     
     
@@ -41,6 +35,12 @@
         <meta property="og:image" content="https://img.biwin.eu.org/touxiang.jpeg"/>
     
     
+        <meta property="og:image" content="https://bing.img.run/rand_1366x768.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://bing.img.run/rand_1366x768.php"/>
+    
+    
+        <meta property="og:image" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://pic.tsmp4.net/api/fengjing/img.php"/>
     
     
     <!--STYLES-->
@@ -52,6 +52,8 @@
 
     
 
+    
+        
     
 </head>
 
@@ -66,7 +68,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -99,7 +101,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -278,88 +280,235 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<div id="categories-archives" class="main-content-wrap">
-    <form id="filter-form" action="##">
-        <input name="category" type="text" class="form-control input--xlarge"
-               placeholder="搜索分类" autofocus="autofocus">
-    </form>
-    <h5 class="archive-result text-color-base text-xlarge"
-        data-message-zero="没有找到分类"
-        data-message-one="找到 1 个分类"
-        data-message-other="找到 {n} 个分类"></h5>
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--full"
+             style="background-image:url('http://pic.tsmp4.net/api/fengjing/img.php');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            小米 AX1800 永久 SSH
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2024-09-09T22:25:34+08:00">
+	
+		    2024 年 9 月 9 日
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/router/">router</a>
 
-        <section class="boxes">
-        
-            
-        
-            
-                <div><a href="#posts-list-JDK8" class="category-anchor" data-category="jdk8" data-parent-categories="">JDK8</a><ul style="margin-bottom:0;"><div><a href="#posts-list-Basics" class="category-anchor" data-category="basics" data-parent-categories="jdk8"> / Basics</a></div></ul></div>
-            
-        
-            
-                <div><a href="#posts-list-devOps" class="category-anchor" data-category="devops" data-parent-categories="">devOps</a></div>
-            
-        
-            
-                <div><a href="#posts-list-hexo" class="category-anchor" data-category="hexo" data-parent-categories="">hexo</a></div>
-            
-        
-            
-                <div><a href="#posts-list-java" class="category-anchor" data-category="java" data-parent-categories="">java</a></div>
-            
-        
-            
-                <div><a href="#posts-list-network" class="category-anchor" data-category="network" data-parent-categories="">network</a></div>
-            
-        
-            
-                <div><a href="#posts-list-router" class="category-anchor" data-category="router" data-parent-categories="">router</a></div>
-            
-        
-            
-                <div><a href="#posts-list-zookeeper" class="category-anchor" data-category="zookeeper" data-parent-categories="">zookeeper</a></div>
-            
-        
-    </section>
-    <section class="boxes">
-        
-            
-        
-            
-                    <div id="posts-list-JDK8" class="archive " data-category="jdk8" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/JDK8/">JDK8 (1)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/df816e2e.html">Java8新特性之流式数据处理</a><span class="archive-post-date"> - 2018 年 6 月 20 日</span></li><div id="posts-list-Basics" class="archive " data-category="basics" data-parent-categories="jdk8"><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/JDK8/Basics/">Basics (1)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/df816e2e.html">Java8新特性之流式数据处理</a><span class="archive-post-date"> - 2018 年 6 月 20 日</span></li></ul></div></ul></div>
-            
-        
-            
-                    <div id="posts-list-devOps" class="archive " data-category="devops" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/devOps/">devOps (6)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/8d02a8ee.html">四、(Docker系列)Docker项目实战</a><span class="archive-post-date"> - 2019 年 12 月 13 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/a95bfc2e.html">docker工具箱命令集-问题集锦</a><span class="archive-post-date"> - 2019 年 11 月 23 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/525c4592.html">五、(Docker系列)Docker深度提升篇笔记</a><span class="archive-post-date"> - 2019 年 11 月 23 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/a2fc68e9.html">三、(Docker系列)Docker精髓剖析-网络</a><span class="archive-post-date"> - 2019 年 11 月 15 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/1d2e50aa.html">二、(Docker系列)Docker灵魂探讨</a><span class="archive-post-date"> - 2019 年 11 月 6 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/f5f90d4.html">一、(Docker系列)初识Docker，搭建本地环境</a><span class="archive-post-date"> - 2019 年 11 月 5 日</span></li></ul></div>
-            
-        
-            
-                    <div id="posts-list-hexo" class="archive " data-category="hexo" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/hexo/">hexo (2)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/9e4dc283.html">Tag Plugins Showcase</a><span class="archive-post-date"> - 2024 年 9 月 1 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/b132932.html">Hexo</a><span class="archive-post-date"> - 2024 年 9 月 1 日</span></li></ul></div>
-            
-        
-            
-                    <div id="posts-list-java" class="archive " data-category="java" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/java/">java (5)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/6d490a08.html">BlockingQueue (阻塞队列详解)</a><span class="archive-post-date"> - 2020 年 1 月 5 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/4e3779c6.html">HashMap为什么线程不安全</a><span class="archive-post-date"> - 2019 年 12 月 16 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/4e2dcaec.html">Java8新特性之默认接口方法</a><span class="archive-post-date"> - 2018 年 6 月 21 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/e19f5dc7.html">Java8新特性之Optional类</a><span class="archive-post-date"> - 2018 年 6 月 19 日</span></li><li class="archive-post"><a class="archive-post-title" href="/posts/e800f027.html">Java8新特性之Lambda表达式</a><span class="archive-post-date"> - 2018 年 6 月 19 日</span></li></ul></div>
-            
-        
-            
-                    <div id="posts-list-network" class="archive " data-category="network" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/network/">network (1)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/e123c538.html">Study-Abroad</a><span class="archive-post-date"> - 2024 年 9 月 1 日</span></li></ul></div>
-            
-        
-            
-                    <div id="posts-list-router" class="archive " data-category="router" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/router/">router (1)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/2278835c.html">小米 AX1800 永久 SSH</a><span class="archive-post-date"> - 2024 年 9 月 9 日</span></li></ul></div>
-            
-        
-            
-                    <div id="posts-list-zookeeper" class="archive " data-category="zookeeper" data-parent-categories=""><h4 class="archive-title text-xlarge"><a class="link-unstyled" href="/categories/zookeeper/">zookeeper (1)</a></h4><ul class="archive-posts"><li class="archive-post"><a class="archive-post-title" href="/posts/b829b66a.html">Zookeeper</a><span class="archive-post-date"> - 2019 年 12 月 30 日</span></li></ul></div>
-            
-        
-    </section>
+
+    
 </div>
+
+        
+    
+    
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="post-meta">
+	        <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+	    </span>
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        hasCoverCaption">
+                
+<article class="post">
+    
+        <span class="post-header-cover-caption caption">再繁忙的学习，也需要静一会下来，放松自己，欣赏美丽的风景</span>
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E8%AF%B4%E6%98%8E"><span class="toc-text">原理说明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%93%8D"><span class="toc-text">实操</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E9%99%8D%E7%BA%A7%E7%89%88%E6%9C%AC"><span class="toc-text">下载降级版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%90%AF-SSH"><span class="toc-text">开启 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-SSH-%E5%AF%86%E7%A0%81"><span class="toc-text">修改 SSH 密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5-SSH"><span class="toc-text">连接 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E7%A1%AE%E4%BF%9D%E6%B0%B8%E4%B9%85-SSH"><span class="toc-text">修改配置文件，确保永久 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E5%9B%BA%E4%BB%B6"><span class="toc-text">更新固件</span></a></li></ol></li></ol>
+
+<h1 id="原理说明"><a href="#原理说明" class="headerlink" title="原理说明"></a>原理说明</h1><p>小米路由的系统是基于 OPENWRT 系统上改的，而有个地方是能够做到更新固件的时候保留配置文件，而防火墙文件<code>/etc/config/firewall</code>中恰好有一个配置为用户自定义配置，并且指定了位置为<code>/etc/firewall.user</code>，而且系统默认是有这个文件的，也就是说更新系统不会被删除，而这个防火墙自定义配置，事实上执行的是shell脚本，而且路由器启动防火墙的时候就会执行，也就是说，我们只需要把操作变更为将命令行写入这个配置文件，就能实现路由器重启后自动配置，也能让我们更新系统享受稳定的固件！</p>
+<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><h2 id="下载降级版本"><a href="#下载降级版本" class="headerlink" title="下载降级版本"></a>下载降级版本</h2><p>首先降级到 <a target="_blank" rel="noopener" href="https://img.biwin.eu.org/miwifi_rm1800_firmware_6718d_1.0.34.bin">1.0.34</a> 版本，通过小米路由管理后台，在“系统状态”中的 tab 页中，找到手动升级，并选择下载好降级包。</p>
+<h2 id="开启-SSH"><a href="#开启-SSH" class="headerlink" title="开启 SSH"></a>开启 SSH</h2><p>降级后不要升级，先登录网页管理界面，登录后可以在地址栏上是这样的地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.31.1/cgi-bin/luci/;stok=XXXXXXXXXXXXXXXXXXXXXXXXXX/web/home#router</span><br></pre></td></tr></table></figure>
+<p>将 XXX 后面的包括斜杠”&#x2F;“在内的所有文字替换成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20nvram%20set%20ssh_en%3D1%3B%20nvram%20commit%3B%20sed%20-i%20&#x27;s%2Fchannel%3D.*%2Fchannel%3D%5C%22debug%5C%22%2Fg&#x27;%20%2Fetc%2Finit.d%2Fdropbear%3B%20%2Fetc%2Finit.d%2Fdropbear%20start%3B</span><br></pre></td></tr></table></figure>
+<p>回车后会返回</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这个时候 SSH 就已经打开了。</p>
+<h2 id="修改-SSH-密码"><a href="#修改-SSH-密码" class="headerlink" title="修改 SSH 密码"></a>修改 SSH 密码</h2><p>开启 SSH 后，将 XXX 后面的包括斜杠”&#x2F;“在内的所有文字替换成如下以修改密码为admin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20echo%20-e%20&#x27;admin%5Cnadmin&#x27;%20%7C%20passwd%20root%3B</span><br></pre></td></tr></table></figure>
+
+<h2 id="连接-SSH"><a href="#连接-SSH" class="headerlink" title="连接 SSH"></a>连接 SSH</h2><p>若要使用 SSH ，用以下代码接口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -o HostKeyAlgorithms=ssh-rsa root@192.168.31.1</span><br></pre></td></tr></table></figure>
+<h2 id="修改配置文件，确保永久-SSH"><a href="#修改配置文件，确保永久-SSH" class="headerlink" title="修改配置文件，确保永久 SSH"></a>修改配置文件，确保永久 SSH</h2><p>原理说明中，描述了有个文件是可以不被更新固件所清除的配置，现在我们对这个文件做相应脚本，确保固件升级后，也会自动执行，从而达到永久开启 SSH。</p>
+<ol>
+<li>先打开文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vi /etc/firewall.user</span><br></pre></td></tr></table></figure></li>
+<li>在文件内容的最下方加入以下代码<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">ssh</span></span><br><span class="line">nvram set ssh_en=1</span><br><span class="line">nvram commit</span><br><span class="line">sed -i &#x27;s/channel=.*/channel=&quot;debug&quot;/g&#x27; /etc/init.d/dropbear</span><br><span class="line">/etc/init.d/dropbear start</span><br><span class="line"></span><br><span class="line">echo -e &#x27;admin\nadmin&#x27; | passwd root</span><br></pre></td></tr></table></figure></li>
+<li>保存退出该文件<br>先按 <code>ESC</code>退 出 VI 的 insert 或 append 模式，输入以下代码保持退出该文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:wq</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="更新固件"><a href="#更新固件" class="headerlink" title="更新固件"></a>更新固件</h2><p>这个时候我们就可以更新固件了。</p>
+            
+
+
+        </div>
+    </div>
+    <br/>
+    <!-- 添加的部分 -->
+    <!-- copyright -->
+    
+        <style>
+.article-footer-copyright {
+	border-left-color: #f66;
+	padding: 12px 24px 12px 30px;
+    margin: 2em 0;
+    border-left-width: 4px;
+    border-left-style: solid;
+    background-color: #f8f8f8;
+    position: relative;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+	margin:0 auto;
+	max-width: 850px;}
+</style>
+<div class="article-footer-copyright">
+    <!-- <span>本文标题:</span><href="/%20"> 小米 AX1800 永久 SSH</a><br/> -->
+    <!-- <span>文章作者:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/> -->
+	<span>版权归属:</span><a href="/" title="访问 Mr.WangLi的个人博客">Mr.WangLi</a><br/>
+    <span>发布时间:</span>2024年09月09日 - 22:25 | 
+    <span>最后更新:</span>2024年09月09日 - 22:44<br/>
+    <span>原始链接:</span><a href="/posts/2278835c.html" title="小米 AX1800 永久 SSH">https://blog.biwin.eu.org/posts/2278835c.html</a><br/>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.biwin.eu.org/posts/2278835c.html"  aria-label="复制成功！"></i></span><br/>
+    <span>许可协议:</span><i class="fab fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">知识共享署名4.0 国际许可协议</a> 转载请保留原文链接及作者。
+</div>
+
+    
+    <!-- copyright -->
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/ax1800/" rel="tag">ax1800</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%B0%8F%E7%B1%B3/" rel="tag">小米</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/e123c538.html"
+                    data-tooltip="Study-Abroad"
+                    aria-label="下一篇: Study-Abroad"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/2278835c.html"
+                    title="分享到 Weibo"
+                    aria-label="分享到 Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/2278835c.html&amp;title=小米 AX1800 永久 SSH"
+                    title="分享到 QQ"
+                    aria-label="分享到 QQ"
+                >
+                    <i class="fab fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/2278835c.html"
+                    title="分享到 Qzone"
+                    aria-label="分享到 Qzone"
+                >
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <br/>
+<div class="vcomment"></div>
+            
+        
+    </div>
+</article>
+
+
+
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
@@ -380,6 +529,151 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/posts/e123c538.html"
+                    data-tooltip="Study-Abroad"
+                    aria-label="下一篇: Study-Abroad"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/2278835c.html"
+                    title="分享到 Weibo"
+                    aria-label="分享到 Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/2278835c.html&amp;title=小米 AX1800 永久 SSH"
+                    title="分享到 QQ"
+                    aria-label="分享到 QQ"
+                >
+                    <i class="fab fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/2278835c.html"
+                    title="分享到 Qzone"
+                    aria-label="分享到 Qzone"
+                >
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://service.weibo.com/share/share.php?&amp;title=https://blog.biwin.eu.org/posts/2278835c.html"
+                        aria-label="分享到 Weibo"
+                    >
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到 Weibo</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.biwin.eu.org/posts/2278835c.html&amp;title=小米 AX1800 永久 SSH"
+                        aria-label="分享到 QQ"
+                    >
+                        <i class="fab fa-qq" aria-hidden="true"></i><span>分享到 QQ</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://blog.biwin.eu.org/posts/2278835c.html"
+                        aria-label="分享到 Qzone"
+                    >
+                        <i class="fa fa-star" aria-hidden="true"></i><span>分享到 Qzone</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -792,6 +1086,26 @@
 
 <!--SCRIPTS END-->
 
+
+    
+        
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '.vcomment',
+                notify: false,
+                verify: false,
+                appId: "6Im09hBEDOiBEU45f3fOc9Hm-gzGzoHsz",
+                appKey: "Tc4aa3tRDVWw4GJEcBNfaAuB",
+                placeholder: "发现问题，讨论问题，反馈问题，欢迎您的留言和评论！",
+                pageSize:'10',
+                avatar:'monsterid',
+                meta: ['nick', 'mail'],
+                lang:''
+            })
+        </script>
+    
 
 
 
